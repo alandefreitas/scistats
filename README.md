@@ -15,6 +15,24 @@ Statistics help us analyse and interpret data. High-performance statistical algo
 <!-- https://gist.github.com/jbroadway/2836900 -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<details>
+<summary>Table of Contents</summary>
+
+- [Examples](#examples)
+  - [Descriptive statistics](#descriptive-statistics)
+  - [Probability](#probability)
+  - [Hypothesis Testing](#hypothesis-testing)
+  - [Bayesian statistics](#bayesian-statistics)
+  - [Data processing](#data-processing)
+- [Roadmap](#roadmap)
+- [Integration](#integration)
+  - [Build from Source](#build-from-source)
+  - [CMake targets](#cmake-targets)
+  - [Other build systems](#other-build-systems)
+  - [Contributing](#contributing)
+  - [Contributors](#contributors)
+
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Examples
