@@ -9,7 +9,7 @@ has_toc: false
 ---
 # Dispersion
 
-> ⚠️ Work in progress
+> Work in progress
 
 
 

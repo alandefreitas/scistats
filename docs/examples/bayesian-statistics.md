@@ -8,7 +8,7 @@ has_toc: false
 ---
 # Bayesian statistics
 
-> ⚠️ Work in progress
+> Work in progress
 
 
 

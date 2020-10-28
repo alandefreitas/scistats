@@ -8,7 +8,7 @@ has_toc: false
 ---
 # Hypothesis Testing
 
-> ⚠️ Work in progress
+> Work in progress
 
 
 

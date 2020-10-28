@@ -8,7 +8,7 @@ has_toc: false
 ---
 # Probability
 
-> ⚠️ Work in progress
+> Work in progress
 
 
 

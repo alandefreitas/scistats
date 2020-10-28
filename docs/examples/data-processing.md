@@ -8,7 +8,7 @@ has_toc: false
 ---
 # Data processing
 
-> ⚠️ Work in progress
+> Work in progress
 
 
 - [Outliers](data-processing/outliers.md)
