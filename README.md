@@ -25,13 +25,26 @@ The examples assume we are working in the `scistats` namespace.
 
 #### Central tendency
 
+With ranges:
+
 ```cpp
 mean(x); 
 ```
 
+With iterators:
+
 ```cpp
 mean(x.begin(), x.end()); 
 ```
+
+You can any algorithm in parallel by changing the execution policy:
+
+```cpp
+mean(execution::seq, x);
+mean(execution::par, x);
+```
+
+If no execution policy is provided, scistats will infer the best execution policy according to the input data.
 
 #### Dispersion
 
