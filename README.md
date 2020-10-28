@@ -4,7 +4,7 @@
 
 [![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
 
-> **b o8 This is work in progress!**
+> ** ⚠️ This is work in progress!**
 
 <br/>
 
@@ -66,31 +66,31 @@ If no execution policy is provided, scistats will infer the best execution polic
 
 #### Dispersion
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 #### Correlation
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 ### Probability
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 ### Hypothesis Testing
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 ### Bayesian statistics
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 ### Data processing
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 #### Outliers
 
-> b o8 Work in progress
+> ⚠️ Work in progress
 
 ## Roadmap
 
