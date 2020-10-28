@@ -9,7 +9,7 @@ has_toc: false
 ---
 # Outliers
 
-> ⚠️ Work in progress
+> Work in progress
 
 
 
