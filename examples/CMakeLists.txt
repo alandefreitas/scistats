@@ -1,0 +1,2 @@
+add_executable(example_descriptive descriptive.cpp)
+target_link_libraries(example_descriptive PRIVATE scistats)
