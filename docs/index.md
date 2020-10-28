@@ -11,7 +11,7 @@ has_toc: false
 
 [![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
 
-> **b o8 This is work in progress!**
+> ** ⚠️ This is work in progress!**
 
 <br/>
 
