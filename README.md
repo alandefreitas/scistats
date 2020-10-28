@@ -4,7 +4,7 @@
 
 [![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
 
-> **⚠️ This is work in progress!**
+> **b o8 This is work in progress!**
 
 <br/>
 
@@ -15,6 +15,24 @@ Statistics help us analyse and interpret data. High-performance statistical algo
 <!-- https://gist.github.com/jbroadway/2836900 -->
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<details>
+<summary>Table of Contents</summary>
+
+- [Examples](#examples)
+  - [Descriptive statistics](#descriptive-statistics)
+  - [Probability](#probability)
+  - [Hypothesis Testing](#hypothesis-testing)
+  - [Bayesian statistics](#bayesian-statistics)
+  - [Data processing](#data-processing)
+- [Roadmap](#roadmap)
+- [Integration](#integration)
+  - [Build from Source](#build-from-source)
+  - [CMake targets](#cmake-targets)
+  - [Other build systems](#other-build-systems)
+  - [Contributing](#contributing)
+  - [Contributors](#contributors)
+
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Examples
@@ -48,31 +66,31 @@ If no execution policy is provided, scistats will infer the best execution polic
 
 #### Dispersion
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 #### Correlation
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Probability
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Hypothesis Testing
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Bayesian statistics
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Data processing
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 #### Outliers
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ## Roadmap
 
@@ -364,5 +382,15 @@ If contributing to the documentation, please edit [`README.md`](README.md) direc
 ### Contributors
 
 <!-- readme: collaborators,contributors -start --> 
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/alandefreitas">
+            <img src="https://avatars0.githubusercontent.com/u/5369819?v=4" width="100;" alt="alandefreitas"/>
+            <br />
+            <sub><b>Alan De Freitas</b></sub>
+        </a>
+    </td></tr>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
