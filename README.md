@@ -4,7 +4,7 @@
 
 [![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
 
-> **⚠️ This is work in progress!**
+> **b o8 This is work in progress!**
 
 <br/>
 
@@ -53,31 +53,31 @@ mean(x.begin(), x.end());
 
 #### Dispersion
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 #### Correlation
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Probability
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Hypothesis Testing
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Bayesian statistics
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ### Data processing
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 #### Outliers
 
-> ⚠️ Work in progress
+> b o8 Work in progress
 
 ## Roadmap
 
@@ -369,5 +369,15 @@ If contributing to the documentation, please edit [`README.md`](README.md) direc
 ### Contributors
 
 <!-- readme: collaborators,contributors -start --> 
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/alandefreitas">
+            <img src="https://avatars0.githubusercontent.com/u/5369819?v=4" width="100;" alt="alandefreitas"/>
+            <br />
+            <sub><b>Alan De Freitas</b></sub>
+        </a>
+    </td></tr>
+</table>
 <!-- readme: collaborators,contributors -end -->
 
