@@ -358,7 +358,7 @@ If you want to use it in another build system you can either install the library
 
 If you want to rewrite the build script, your project needs to 1) include the headers, and 2) link with the dependencies described in [`source/CMakeLists.txt`](source/CMakeLists.txt).
 
-### Contributing
+# Contributing
 
 There are many ways in which you can contribute to this library:
 
@@ -379,7 +379,7 @@ If contributing with code, please leave the pedantic mode ON (`-DBUILD_WITH_PEDA
 
 If contributing to the documentation, please edit [`README.md`](README.md) directly, as the files in [`./docs`](./docs) are automatically generated with [mdsplit](https://github.com/alandefreitas/mdsplit).
 
-### Contributors
+## Contributors
 
 <!-- readme: collaborators,contributors -start --> 
 <table>
