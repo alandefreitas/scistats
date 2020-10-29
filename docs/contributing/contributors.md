@@ -1,8 +1,9 @@
 ---
 layout: default
 title: Contributors
-nav_order: 6
+nav_order: 1
 has_children: false
+parent: Contributing
 has_toc: false
 ---
 # Contributors

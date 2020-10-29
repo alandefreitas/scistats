@@ -2,7 +2,7 @@
 layout: default
 title: Contributing
 nav_order: 5
-has_children: false
+has_children: true
 has_toc: false
 ---
 # Contributing
@@ -27,7 +27,7 @@ Example: CLion
 If contributing to the documentation, please edit [`README.md`](https://github.com/alandefreitas/scistats/blob/master/README.md) directly, as the files in [`./docs`](.) are automatically generated with [mdsplit](https://github.com/alandefreitas/mdsplit).
 
 
-- [Contributors](contributors.md)
+- [Contributors](contributing/contributors.md)
 
 
 <!-- Generated with mdsplit: https://github.com/alandefreitas/mdsplit -->
