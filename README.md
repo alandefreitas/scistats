@@ -390,6 +390,13 @@ If contributing to the documentation, please edit [`README.md`](README.md) direc
             <br />
             <sub><b>Alan De Freitas</b></sub>
         </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/rcpsilva">
+            <img src="https://avatars1.githubusercontent.com/u/15973642?v=4" width="100;" alt="rcpsilva"/>
+            <br />
+            <sub><b>rcpsilva</b></sub>
+        </a>
     </td></tr>
 </table>
 <!-- readme: collaborators,contributors -end -->
