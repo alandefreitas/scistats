@@ -18,17 +18,17 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 <details>
 <summary>Table of Contents</summary>
 
-  - [Examples](#examples)
-    - [Descriptive statistics](#descriptive-statistics)
-    - [Probability](#probability)
-    - [Hypothesis Testing](#hypothesis-testing)
-    - [Bayesian statistics](#bayesian-statistics)
-    - [Data processing](#data-processing)
-  - [Roadmap](#roadmap)
-  - [Integration](#integration)
-    - [Build from Source](#build-from-source)
-    - [CMake targets](#cmake-targets)
-    - [Other build systems](#other-build-systems)
+- [Examples](#examples)
+  - [Descriptive statistics](#descriptive-statistics)
+  - [Probability](#probability)
+  - [Hypothesis Testing](#hypothesis-testing)
+  - [Bayesian statistics](#bayesian-statistics)
+  - [Data processing](#data-processing)
+- [Roadmap](#roadmap)
+- [Integration](#integration)
+  - [Build from Source](#build-from-source)
+  - [CMake targets](#cmake-targets)
+  - [Other build systems](#other-build-systems)
 - [Contributing](#contributing)
   - [Contributors](#contributors)
 
