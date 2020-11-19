@@ -1,6 +1,7 @@
 #######################################################
 ### External libraries                              ###
 #######################################################
+# Async++
 CPMAddPackage(
         NAME Async++
         GITHUB_REPOSITORY Amanieu/asyncplusplus
@@ -24,6 +25,14 @@ else ()
     message(FATAL_ERROR Cannot find or download Async++)
 endif ()
 
+set(COMPILE_OPTIONS_TO_IGNORE_ASYNCPP_WARNINGS
+        -Wno-shadow-field-in-constructor
+        -Wno-shadow
+        -Wno-shadow-field
+        -Wno-sign-conversion
+        -Wno-implicit-float-conversion)
+
+# Ranges
 CPMAddPackage(
         NAME range-v3
         URL https://github.com/ericniebler/range-v3/archive/0.11.0.zip
@@ -31,26 +40,40 @@ CPMAddPackage(
         # the range-v3 CMakeLists screws with configuration options
         DOWNLOAD_ONLY True
 )
-
 if (range-v3_ADDED)
     add_library(range-v3 INTERFACE IMPORTED)
     target_include_directories(range-v3 INTERFACE "${range-v3_SOURCE_DIR}/include")
 endif ()
 
-
+# Threads
 find_package(Threads REQUIRED)
 
 #######################################################
 ### Library                                         ###
 #######################################################
+# Generate the main file with all headers for convenience only
+file(GLOB_RECURSE ALL_HEADERS *.h)
+set(ALL_HEADERS_FILE ${CMAKE_CURRENT_SOURCE_DIR}/scistats/scistats.h)
+file(WRITE ${ALL_HEADERS_FILE} "// This file is generated automatically
+// Do not modify
+#ifndef SCISTATS_SCISTATS_ALL_HEADERS_H
+#define SCISTATS_SCISTATS_ALL_HEADERS_H\n\n")
+foreach (HEADER ${ALL_HEADERS})
+    file(RELATIVE_PATH RELATIVE_HEADER ${CMAKE_CURRENT_SOURCE_DIR} ${HEADER})
+    file(APPEND ${ALL_HEADERS_FILE} "#include <${RELATIVE_HEADER}>\n")
+endforeach ()
+file(APPEND ${ALL_HEADERS_FILE} "\n#endif //HISTOGRAMS_STATS_H\n")
+
+# Add interface target
 add_library(scistats INTERFACE)
 target_include_directories(scistats
         INTERFACE $<BUILD_INTERFACE:${SCISTATS_ROOT_DIR}/source>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 target_link_libraries(scistats INTERFACE Threads::Threads Async++ range-v3)
+target_compile_options(scistats INTERFACE ${COMPILE_OPTIONS_TO_IGNORE_ASYNCPP_WARNINGS})
 
 # https://cmake.org/cmake/help/v3.14/manual/cmake-compile-features.7.html#requiring-language-standards
-target_compile_features(scistats INTERFACE cxx_std_17)
+target_compile_features(scistats INTERFACE cxx_std_20)
 
 # Hacks to support MSVC
 if (MSVC)
@@ -71,6 +94,7 @@ if (HAVE_WINDOWS_MINMAX)
     target_compile_definitions(scistats INTERFACE NOMINMAX)
 endif ()
 
+# Use pedantic warnings especially in debug mode
 if (BUILD_WITH_PEDANTIC_WARNINGS)
     if (MSVC)
         target_compile_options(scistats PUBLIC /W4 /WX)
