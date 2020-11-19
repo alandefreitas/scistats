@@ -1,9 +1,12 @@
+#include <iostream>
+#include <vector>
+
 #include <boost/ut.hpp>
+
 #include <range/v3/view/transform.hpp>
 #include <range/v3/view/zip.hpp>
 #include <scistats/distribution/norm.h>
 #include <scistats/distribution/students_t.h>
-#include <vector>
 
 int main() {
     using namespace boost::ut;
@@ -15,22 +18,27 @@ int main() {
                              0,     0.0625, 0.1,    0.125, 0.2,     0.25,
                              0.5,   1,      2,      10,    50,      100};
 
-    constexpr auto compare_floating_range = [](auto range_a, auto range_b) {
+    constexpr auto compare_floating_range = [](std::string_view name,
+                                               auto range_a, auto range_b) {
         auto expect_pairs = ranges::views::zip(range_a, range_b);
+        std::cout << name << ": range_a: " << ranges::views::all(range_a) << std::endl;
+        std::cout << name << ": range_b: " << ranges::views::all(range_b) << std::endl;
         for (const auto &[result, expected] : expect_pairs) {
-            if (!(std::isinf(result) && std::isinf(expected)) &&
-                !(std::isnan(result) && std::isnan(expected))) {
+            bool not_both_inf = !(std::isinf(result) && std::isinf(expected));
+            bool not_both_nan = !(std::isnan(result) && std::isnan(expected));
+            if (not_both_inf && not_both_nan) {
                 expect(abs(result - expected) == 0._d)
-                    << result << " != " << expected;
+                    << result << " != " << expected << " - Comparing " << name;
             }
         }
     };
 
+    double minfd = -inf<double>;
     test("Normal Distribution") = [&] {
         auto pdfs =
             ranges::views::transform(x, [](auto v) { return norm_pdf(v); });
         compare_floating_range(
-            pdfs,
+            "pdfs", pdfs,
             std::vector<double>{
                 0,        0,        7.6946e-23, 0.053991,   0.241971, 0.352065,
                 0.386668, 0.391043, 0.395838,   0.396953,   0.398164, 0.398444,
@@ -40,7 +48,7 @@ int main() {
         auto pdfs2 = ranges::views::transform(
             x, [](auto v) { return norm_pdf(v, 2., 3.); });
         compare_floating_range(
-            pdfs2,
+            "pdfs2", pdfs2,
             std::vector<double>{
                 1.26351e-252, 7.64023e-67, 4.46101e-05, 0.05467,     0.0806569,
                 0.0939706,    0.100379,    0.101628,    0.103476,    0.104085,
@@ -51,7 +59,7 @@ int main() {
         auto norm_cdfs =
             ranges::views::transform(x, [](auto v) { return norm_cdf(v); });
         compare_floating_range(
-            norm_cdfs,
+            "norm_cdfs", norm_cdfs,
             std::vector<double>{
                 0,        0,        0,        0.0227501, 0.158655, 0.308538,
                 0.401294, 0.42074,  0.450262, 0.460172,  0.475082, 0.480061,
@@ -61,7 +69,7 @@ int main() {
         auto norm_cdfs2 = ranges::views::transform(
             x, [](auto v) { return norm_cdf(v, 2., 3.); });
         compare_floating_range(
-            norm_cdfs2,
+            "norm_cdfs2", norm_cdfs2,
             std::vector<double>{
                 0,        0,        3.16712e-05, 0.0912112, 0.158655, 0.202328,
                 0.226627, 0.231678, 0.239369,    0.241964,  0.245884, 0.247198,
@@ -70,61 +78,25 @@ int main() {
 
         auto ps =
             ranges::views::transform(x, [](auto v) { return norm_cdf(v); });
-        compare_floating_range(ps, std::vector<double>{});
 
         auto norm_invs =
             ranges::views::transform(ps, [](auto p) { return norm_inv(p); });
-        compare_floating_range(norm_invs, std::vector<double>{-inf<double>,
-                                                              -inf<double>,
-                                                              -inf<double>,
-                                                              -2,
-                                                              -1,
-                                                              -0.5,
-                                                              -0.25,
-                                                              -0.2,
-                                                              -0.125,
-                                                              -0.1,
-                                                              -0.0625,
-                                                              -0.05,
-                                                              0,
-                                                              0.0625,
-                                                              0.1,
-                                                              0.125,
-                                                              0.2,
-                                                              0.25,
-                                                              0.5,
-                                                              1,
-                                                              2,
-                                                              inf<double>,
-                                                              inf<double>,
-                                                              inf<double>});
+        std::vector<double> expected_norm_invs{
+            minfd, minfd,  minfd,  -2,          -1,          -0.5,
+            -0.25, -0.2,   -0.125, -0.1,        -0.0625,     -0.05,
+            0,     0.0625, 0.1,    0.125,       0.2,         0.25,
+            0.5,   1,      2,      inf<double>, inf<double>, inf<double>};
+        compare_floating_range("norm_invs", norm_invs, expected_norm_invs);
 
         auto norm_invs2 = ranges::views::transform(
             ps, [](auto p) { return norm_inv(p, 2., 3.); });
-        compare_floating_range(norm_invs2, std::vector<double>{-inf<double>,
-                                                               -inf<double>,
-                                                               -inf<double>,
-                                                               -4,
-                                                               -1,
-                                                               0.5,
-                                                               1.25,
-                                                               1.4,
-                                                               1.625,
-                                                               1.7,
-                                                               1.8125,
-                                                               1.85,
-                                                               2,
-                                                               2.1875,
-                                                               2.3,
-                                                               2.375,
-                                                               2.6,
-                                                               2.75,
-                                                               3.5,
-                                                               5,
-                                                               8,
-                                                               inf<double>,
-                                                               inf<double>,
-                                                               inf<double>});
+        compare_floating_range(
+            "norm_invs2", norm_invs2,
+            std::vector<double>{
+                minfd, minfd,  minfd, -4,          -1,          0.5,
+                1.25,  1.4,    1.625, 1.7,         1.8125,      1.85,
+                2,     2.1875, 2.3,   2.375,       2.6,         2.75,
+                3.5,   5,      8,     inf<double>, inf<double>, inf<double>});
     };
 
     test("T Distribution") = [&] {
@@ -132,7 +104,7 @@ int main() {
         auto t_pdfs =
             ranges::views::transform(x, [df](auto v) { return t_pdf(v, df); });
         compare_floating_range(
-            t_pdfs,
+            "t_pdfs", t_pdfs,
             std::vector<double>{
                 3.26793e-39, 3.08251e-30, 7.48671e-11, 0.0569413,  0.237858,
                 0.347735,    0.38295,     0.387425,    0.392336,   0.393478,
@@ -143,7 +115,7 @@ int main() {
         auto t_cdfs =
             ranges::views::transform(x, [df](auto v) { return t_cdf(v, df); });
         compare_floating_range(
-            t_cdfs,
+            "t_cdfs", t_cdfs,
             std::vector<double>{
                 1.13003e-38, 5.37431e-30, 3.29993e-11, 0.0274718, 0.162791,
                 0.310424,    0.402175,    0.421438,    0.450693,  0.460516,
@@ -153,18 +125,17 @@ int main() {
 
         auto ps =
             ranges::views::transform(x, [df](auto v) { return t_cdf(v, df); });
-        compare_floating_range(ps, std::vector<double>{});
 
         auto t_invs =
             ranges::views::transform(x, [df](auto p) { return t_inv(p, df); });
         compare_floating_range(
-            t_invs, std::vector<double>{
-                        NaN<double>,  NaN<double>, NaN<double>, NaN<double>,
-                        NaN<double>,  NaN<double>, NaN<double>, NaN<double>,
-                        NaN<double>,  NaN<double>, NaN<double>, NaN<double>,
-                        -inf<double>, -1.5798,     -1.31143,    -1.17386,
-                        -0.854192,    -0.683044,   0,           inf<double>,
-                        NaN<double>,  NaN<double>, NaN<double>, NaN<double>});
+            "t_invs", t_invs,
+            std::vector<double>{
+                NaN<double>, NaN<double>, NaN<double>, NaN<double>, NaN<double>,
+                NaN<double>, NaN<double>, NaN<double>, NaN<double>, NaN<double>,
+                NaN<double>, NaN<double>, minfd,       -1.5798,     -1.31143,
+                -1.17386,    -0.854192,   -0.683044,   0,           inf<double>,
+                NaN<double>, NaN<double>, NaN<double>, NaN<double>});
     };
 
     return 0;
