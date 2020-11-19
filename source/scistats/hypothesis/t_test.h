@@ -88,7 +88,8 @@ namespace scistats {
         double s2y = var(y, mean_y);
         double difference = mean_x - mean_y;
 
-        double dfe = 0, ratio = 0;
+        double dfe = 0;
+        double ratio = 0;
         if (equal_variance) {
             dfe = nx + ny - 2;
             double s_pooled = sqrt(((nx - 1) * s2x + (ny - 1) * s2y) / dfe);
