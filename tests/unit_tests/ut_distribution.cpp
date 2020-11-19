@@ -76,12 +76,12 @@ int main() {
                 0.252493, 0.259194, 0.263258,    0.265986,  0.274253, 0.279834,
                 0.308538, 0.369441, 0.5,         0.99617,   1,        1});
 
+        /*
+         * norm_inv -> still fails on GCC9 fix-it
+         *
         auto ps =
             ranges::views::transform(x, [](auto v) { return norm_cdf(v); });
 
-        /*
-         * still fails on GCC9 fix-it
-         *
         auto norm_invs =
             ranges::views::transform(ps, [](auto p) { return norm_inv(p); });
         std::vector<double> expected_norm_invs{
