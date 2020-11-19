@@ -13,6 +13,7 @@
 
 // Internal
 #include <scistats/math/beta_inc.h>
+#include <scistats/math/constants.h>
 
 namespace scistats {
     /// Inverse incomplete beta function with alpha parameter

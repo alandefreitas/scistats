@@ -10,6 +10,7 @@
 
 // Internal
 #include <scistats/common/concepts.h>
+#include <scistats/common/constants.h>
 #include <scistats/math/abs.h>
 
 namespace scistats {
