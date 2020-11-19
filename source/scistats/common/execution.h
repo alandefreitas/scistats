@@ -5,7 +5,6 @@
 #ifndef SCISTATS_EXECUTION_H
 #define SCISTATS_EXECUTION_H
 
-#include <execution>
 #include <type_traits>
 
 namespace scistats::execution {

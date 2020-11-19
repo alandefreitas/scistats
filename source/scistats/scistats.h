@@ -10,7 +10,6 @@
 #include <scistats/common/type_traits.h>
 #include <scistats/descriptive/bounds.h>
 #include <scistats/descriptive/cov.h>
-#include <scistats/descriptive/descriptive.h>
 #include <scistats/descriptive/max.h>
 #include <scistats/descriptive/mean.h>
 #include <scistats/descriptive/median.h>
