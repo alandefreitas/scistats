@@ -25,12 +25,22 @@ else ()
     message(FATAL_ERROR Cannot find or download Async++)
 endif ()
 
-set(COMPILE_OPTIONS_TO_IGNORE_ASYNCPP_WARNINGS
-        -Wno-shadow-field-in-constructor
-        -Wno-shadow
-        -Wno-shadow-field
-        -Wno-sign-conversion
-        -Wno-implicit-float-conversion)
+if (UNIX)
+    if (APPLE)
+        set(COMPILE_OPTIONS_TO_IGNORE_ASYNCPP_WARNINGS
+                -Wno-shadow-field-in-constructor
+                -Wno-shadow
+                -Wno-shadow-field
+                -Wno-sign-conversion
+                -Wno-implicit-float-conversion
+                )
+    else ()
+        set(COMPILE_OPTIONS_TO_IGNORE_ASYNCPP_WARNINGS
+                -Wno-error=sign-conversion
+                )
+    endif ()
+endif ()
+
 
 # Ranges
 CPMAddPackage(
