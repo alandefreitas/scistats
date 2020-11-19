@@ -49,19 +49,18 @@ namespace scistats {
         double tval = (xmean - mu) / ser;
 
         // Compute the p-value for the test
-        double p = NaN<double>;
         switch (tail) {
         case tail_type::two_tailed:
-            p = 2 * t_cdf(-abs(tval), df);
+            return 2. * t_cdf(-abs(tval), df);
             break;
         case tail_type::right_tail:
-            p = t_cdf(-tval, df);
+            return t_cdf(-tval, df);
             break;
         case tail_type::left_tail:
-            p = t_cdf(tval, df);
+            return t_cdf(tval, df);
             break;
         }
-        return p;
+        return NaN<double>;
     }
 
     /// \brief Two-sample t-test
@@ -116,6 +115,7 @@ namespace scistats {
         case tail_type::left_tail:
             return t_cdf(ratio, dfe);
         }
+        return NaN<double>;
     }
 
 } // namespace scistats

@@ -65,9 +65,10 @@ namespace scistats {
                                   xmean + crit);
         }
         }
+        return std::make_pair<NaN<double>,NaN<double>>;
     }
 
-    /// \brief One-sample t-test interval
+    /// \brief Two-sample t-test interval
     template <Range T1, Range T2>
     std::pair<double, double>
     t_test_interval(const T1 &x, const T2 &y, double alpha = 0.05,
@@ -113,6 +114,7 @@ namespace scistats {
                                   difference + spread);
         }
         }
+        return std::make_pair<NaN<double>,NaN<double>>;
     }
 
 } // namespace scistats
