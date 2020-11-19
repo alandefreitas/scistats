@@ -58,7 +58,7 @@ namespace scistats {
     /// \brief Range min
     template <Range T>
     auto min(T &c) {
-        return min(c.begin(), c.end());
+        return scistats::min(c.begin(), c.end());
     }
 
     /// \brief Elements min

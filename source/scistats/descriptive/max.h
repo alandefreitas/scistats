@@ -60,7 +60,7 @@ namespace scistats {
     /// \brief Range max
     template <Range T>
     auto max(T &c) {
-        return max(c.begin(), c.end());
+        return scistats::max(c.begin(), c.end());
     }
 
     /// \brief Elements max
