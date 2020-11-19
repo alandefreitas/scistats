@@ -37,11 +37,11 @@ namespace scistats {
         double fpu = std::pow(10.0, sae);
 
         //  If the answer is easy to determine, return immediately.
-        if (alpha == 0.0) {
+        if (abs(alpha) < epsilon<double>) {
             return 0.0;
         }
 
-        if (alpha == 1.0) {
+        if (abs(alpha-1.0) < epsilon<double>) {
             return 1.0;
         }
 
@@ -161,7 +161,7 @@ namespace scistats {
                     return value;
                 }
 
-                if (tx != 0.0 && tx != 1.0) {
+                if (abs(tx) > epsilon<double> && abs(tx-1.) > epsilon<double>) {
                     break;
                 }
 
