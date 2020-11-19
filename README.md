@@ -29,7 +29,7 @@ Statistics help us analyze and interpret data. High-performance statistical algo
   - [Build from Source](#build-from-source)
   - [CMake targets](#cmake-targets)
   - [Other build systems](#other-build-systems)
-  - [Contributing](#contributing)
+- [Contributing](#contributing)
   - [Contributors](#contributors)
 
 </details>
@@ -55,7 +55,7 @@ With iterators:
 mean(x.begin(), x.end()); 
 ```
 
-You can any algorithm in parallel by changing the execution policy:
+You can run any algorithm in parallel by changing the execution policy:
 
 ```cpp
 mean(execution::seq, x);
@@ -358,7 +358,7 @@ If you want to use it in another build system you can either install the library
 
 If you want to rewrite the build script, your project needs to 1) include the headers, and 2) link with the dependencies described in [`source/CMakeLists.txt`](source/CMakeLists.txt).
 
-### Contributing
+## Contributing
 
 There are many ways in which you can contribute to this library:
 
@@ -389,6 +389,13 @@ If contributing to the documentation, please edit [`README.md`](README.md) direc
             <img src="https://avatars0.githubusercontent.com/u/5369819?v=4" width="100;" alt="alandefreitas"/>
             <br />
             <sub><b>Alan De Freitas</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/rcpsilva">
+            <img src="https://avatars1.githubusercontent.com/u/15973642?v=4" width="100;" alt="rcpsilva"/>
+            <br />
+            <sub><b>Rcpsilva</b></sub>
         </a>
     </td></tr>
 </table>

@@ -43,8 +43,8 @@ Statistics help us analyze and interpret data. High-performance statistical algo
     - [Use it as a CMake subdirectory](integration/cmake-targets/use-it-as-a-cmake-subdirectory.md)
     - [CMake with Automatic Download](integration/cmake-targets/cmake-with-automatic-download.md)
   - [Other build systems](integration/other-build-systems.md)
-  - [Contributing](integration/contributing.md)
-  - [Contributors](integration/contributors.md)
+- [Contributing](contributing.md)
+  - [Contributors](contributing/contributors.md)
 
 
 <!-- Generated with mdsplit: https://github.com/alandefreitas/mdsplit -->

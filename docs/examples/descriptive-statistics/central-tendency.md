@@ -21,7 +21,7 @@ With iterators:
 mean(x.begin(), x.end()); 
 ```
 
-You can any algorithm in parallel by changing the execution policy:
+You can run any algorithm in parallel by changing the execution policy:
 
 ```cpp
 mean(execution::seq, x);

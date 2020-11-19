@@ -1,9 +1,8 @@
 ---
 layout: default
 title: Contributing
-nav_order: 4
-has_children: false
-parent: Integration
+nav_order: 5
+has_children: true
 has_toc: false
 ---
 # Contributing
@@ -22,12 +21,13 @@ If contributing with code, please leave the pedantic mode ON (`-DBUILD_WITH_PEDA
 
 Example: CLion
     
-![CLion Settings with Pedantic Mode](../img/pedantic_clion.png)
+![CLion Settings with Pedantic Mode](img/pedantic_clion.png)
 
 
-If contributing to the documentation, please edit [`README.md`](https://github.com/alandefreitas/scistats/blob/master/README.md) directly, as the files in [`./docs`](..) are automatically generated with [mdsplit](https://github.com/alandefreitas/mdsplit).
+If contributing to the documentation, please edit [`README.md`](https://github.com/alandefreitas/scistats/blob/master/README.md) directly, as the files in [`./docs`](.) are automatically generated with [mdsplit](https://github.com/alandefreitas/mdsplit).
 
 
+- [Contributors](contributing/contributors.md)
 
 
 <!-- Generated with mdsplit: https://github.com/alandefreitas/mdsplit -->
