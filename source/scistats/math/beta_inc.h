@@ -92,7 +92,7 @@ namespace scistats {
         double value = x;
 
         //  Special cases.
-        if (abs(x) < epsilon<T> || abs(x - 1.0) < epsilon<T>) {
+        if (abs(x) < epsilon<T1> || abs(x - 1.0) < epsilon<T1>) {
             return value;
         }
 
