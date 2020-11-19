@@ -42,4 +42,4 @@
 #include <scistats/math/xinbta.h>
 #include <scistats/scistats.h>
 
-#endif // HISTOGRAMS_STATS_H
+#endif // SCISTATS_SCISTATS_ALL_HEADERS_H

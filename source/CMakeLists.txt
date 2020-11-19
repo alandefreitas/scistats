@@ -62,7 +62,7 @@ foreach (HEADER ${ALL_HEADERS})
     file(RELATIVE_PATH RELATIVE_HEADER ${CMAKE_CURRENT_SOURCE_DIR} ${HEADER})
     file(APPEND ${ALL_HEADERS_FILE} "#include <${RELATIVE_HEADER}>\n")
 endforeach ()
-file(APPEND ${ALL_HEADERS_FILE} "\n#endif //HISTOGRAMS_STATS_H\n")
+file(APPEND ${ALL_HEADERS_FILE} "\n#endif // SCISTATS_SCISTATS_ALL_HEADERS_H\n")
 
 # Add interface target
 add_library(scistats INTERFACE)
