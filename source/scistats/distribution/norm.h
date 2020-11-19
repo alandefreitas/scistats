@@ -28,6 +28,7 @@ namespace scistats {
     /// \brief Normal inverse cumulative distribution function
     template <Floating T>
     T norm_inv(T p, T mu = 0.0, T sigma = 1.0) {
+        /* fails on GCC9 */
         return mu + sigma * std::sqrt(2.0) * erfinv(2.0 * p - 1.0);
     }
 } // namespace scistats

@@ -24,6 +24,7 @@ namespace scistats {
     template <ExecutionPolicy P, Iterator T1, Iterator T2>
     promote<value_type<T1>> cov(P p, T1 begin_a, T1 end_a, T2 begin_b,
                                 T2 end_b) {
+        /* still fails on GCC/Clang */
         using value_type = value_type<T1>;
         using return_type = promote<value_type>;
 
