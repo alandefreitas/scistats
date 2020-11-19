@@ -13,62 +13,68 @@
 #include <range/v3/iterator/concepts.hpp>
 
 // Internal
+#include <scistats/common/concepts.h>
 #include <scistats/common/execution.h>
-#include <scistats/common/promote.h>
+#include <scistats/math/constants.h>
 
 namespace scistats {
-    /// Sequential max value of sequence
-    template <class Iterator>
-    typename std::iterator_traits<Iterator>::value_type
-    max(scistats::execution::sequenced_policy, Iterator begin, Iterator end) {
-        return *std::max_element(begin, end);
-    }
-
-    /// Parallel max value of sequence
-    template <class Iterator>
-    typename std::iterator_traits<Iterator>::value_type
-    max(scistats::execution::parallel_policy, Iterator begin, Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        return async::parallel_reduce(
-            async::make_range(std::next(begin), end), *begin,
-            [](value_type x, value_type y) { return x > y ? x : y; });
-    }
-
-    template <class Iterator>
-    std::enable_if_t<ranges::input_iterator<Iterator>,
-                     typename Iterator::value_type>
-    max(Iterator begin, Iterator end) {
-        if (std::distance(begin, end) < 1000) {
-            return scistats::max(scistats::execution::seq, begin, end);
+    /// \brief Sequential max
+    template <Iterator T>
+    value_type<T> max(execution::sequenced_policy, T begin, T end) {
+        if (std::distance(begin, end) == 0) {
+            return NaN<value_type<T>>;
         } else {
-            return scistats::max(scistats::execution::par, begin, end);
+            return *std::max_element(begin, end);
         }
     }
 
-    template <class Range>
-    auto max(scistats::execution::sequenced_policy e, const Range &c) {
-        return scistats::max(e, c.begin(), c.end());
+    /// \brief Parallel max
+    template <Iterator T>
+    value_type<T> max(execution::parallel_policy, T begin, T end) {
+        return async::parallel_reduce(
+            async::make_range(std::next(begin), end), *begin,
+            [](value_type<T> x, value_type<T> y) { return x > y ? x : y; });
     }
 
-    template <class Range>
-    auto max(scistats::execution::parallel_policy e, const Range &c) {
-        return scistats::max(e, c.begin(), c.end());
+    /// \brief Threshold for using the parallel version of max
+    constexpr size_t implicit_parallel_max_threshold = 1000;
+
+    /// \brief Iterator max with implicit policy
+    template <Iterator T>
+    value_type<T> max(T begin, T end) {
+        auto size = static_cast<size_t>(std::distance(begin, end));
+        const bool run_seq = size < implicit_parallel_max_threshold;
+        if (run_seq) {
+            return max(execution::seq, begin, end);
+        } else {
+            return max(execution::par, begin, end);
+        }
     }
 
-    template <class Range> auto max(const Range &c) {
-        return scistats::max(c.begin(), c.end());
+    /// \brief Range max with policy
+    template <ExecutionPolicy P, Range T>
+    auto max(P e, T &c) {
+        return max(e, c.begin(), c.end());
     }
 
-    template <class VALUE_TYPE>
-    std::enable_if_t<!ranges::input_iterator<VALUE_TYPE>, VALUE_TYPE>
-    max(VALUE_TYPE a, VALUE_TYPE b) {
-        return std::max(a, b);
+    /// \brief Range max
+    template <Range T>
+    auto max(T &c) {
+        return max(c.begin(), c.end());
     }
 
-    template <class VALUE_TYPE, class... Args>
-    std::enable_if_t<!ranges::input_iterator<VALUE_TYPE>, VALUE_TYPE>
-    max(VALUE_TYPE a, VALUE_TYPE b, Args &&... args) {
-        return std::max(a, scistats::max(b, std::forward<Args>(args)...));
+    /// \brief Elements max
+    template <class T>
+    T max(T a, T b) {
+        // Note that this is different from std::max when there are
+        // ties
+        return b < a ? a : b;
+    }
+
+    /// \brief Elements max
+    template <class T, class... Ts>
+    T max(T a, T b, Ts &&... args) {
+        return std::max(a, max(b, std::forward<Ts>(args)...));
     }
 
 } // namespace scistats

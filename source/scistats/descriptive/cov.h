@@ -17,105 +17,68 @@
 
 // Internal
 #include <scistats/common/execution.h>
-#include <scistats/common/promote.h>
 #include <scistats/descriptive/mean.h>
 
 namespace scistats {
-    /// Sequential cov value of sequence
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    cov(scistats::execution::sequenced_policy, Iterator begin_a, Iterator end_a,
-        Iterator begin_b, Iterator end_b) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        using return_type =
-            promote<typename std::iterator_traits<Iterator>::value_type>;
+    /// \brief Iterator cov with explicit policy
+    template <ExecutionPolicy P, Iterator T1, Iterator T2>
+    promote<value_type<T1>> cov(P p, T1 begin_a, T1 end_a, T2 begin_b,
+                                T2 end_b) {
+        using value_type = value_type<T1>;
+        using return_type = promote<value_type>;
 
         auto a_size = std::distance(begin_a, end_a);
         auto b_size = std::distance(begin_b, end_b);
         auto n = std::min(a_size, b_size);
-        value_type sum1 = std::accumulate(begin_a, end_a, value_type(0));
-        value_type sum2 = std::accumulate(begin_b, end_b, value_type(0));
-        return_type c{0};
-        for (size_t i = 0; i < n; ++i) {
-            return_type t1 = static_cast<return_type>(*begin_a) -
-                             static_cast<return_type>(sum1) / n;
-            return_type t2 = static_cast<return_type>(*begin_b) -
-                             static_cast<return_type>(sum2) / n;
-            c += t1 * t2;
-            ++begin_a;
-            ++begin_b;
-        }
-
-        return c / (n - 1);
-    }
-
-    /// Parallel cov value of sequence
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    cov(scistats::execution::parallel_policy, Iterator begin_a, Iterator end_a,
-        Iterator begin_b, Iterator end_b) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        using return_type =
-            promote<typename std::iterator_traits<Iterator>::value_type>;
-
-        auto a_size = std::distance(begin_a, end_a);
-        auto b_size = std::distance(begin_b, end_b);
-        auto n = std::min(a_size, b_size);
-
-        value_type sum1 = async::parallel_reduce(
-            async::make_range(begin_a, end_a), value_type{0},
-            [](value_type x, value_type y) { return x + y; });
-
-        value_type sum2 = async::parallel_reduce(
-            async::make_range(begin_b, end_b), value_type{0},
-            [](value_type x, value_type y) { return x + y; });
 
         auto range_a = ranges::views::counted(begin_a, n);
         auto range_b = ranges::views::counted(begin_b, n);
 
+        value_type sum_a = sum(p, range_a);
+        value_type sum_b = sum(p, range_b);
+
+        // c_i = (a_i - sum_a)/n * (b_i - sum_b)/n
         auto range_c = ranges::views::zip_with(
             [&](auto a, auto b) {
                 return_type t1 = static_cast<return_type>(a) -
-                                 static_cast<return_type>(sum1) / n;
+                                 static_cast<return_type>(sum_a) / n;
                 return_type t2 = static_cast<return_type>(b) -
-                                 static_cast<return_type>(sum2) / n;
+                                 static_cast<return_type>(sum_b) / n;
                 return t1 * t2;
             },
             range_a, range_b);
 
-        return_type c = async::parallel_reduce(
-            range_c, return_type{0},
-            [](return_type x, return_type y) { return x + y; });
-
+        return_type c = sum(p, range_c);
         return c / (n - 1);
     }
 
-    template <class Iterator>
-    auto cov(Iterator begin_a, Iterator end_a, Iterator begin_b,
-             Iterator end_b) {
-        if (std::distance(begin_a, end_a) < 1000 &&
-            std::distance(begin_b, end_b) < 1000) {
-            return cov(scistats::execution::seq, begin_a, end_a, begin_b,
-                       end_b);
+    /// \brief Threshold for using the parallel version of cov
+    constexpr size_t implicit_parallel_cov_threshold =
+        implicit_parallel_sum_threshold;
+
+    /// \brief Iterator cov with implicit policy
+    template <Iterator T1, Iterator T2>
+    auto cov(T1 begin_a, T1 end_a, T2 begin_b, T2 end_b) {
+        auto size_a = static_cast<size_t>(std::distance(begin_a, end_a));
+        auto size_b = static_cast<size_t>(std::distance(begin_b, end_b));
+        const bool run_seq_a = size_a < implicit_parallel_cov_threshold;
+        const bool run_seq_b = size_b < implicit_parallel_cov_threshold;
+        if (run_seq_a || run_seq_b) {
+            return cov(execution::seq, begin_a, end_a, begin_b, end_b);
         } else {
-            return cov(scistats::execution::par, begin_a, end_a, begin_b,
-                       end_b);
+            return cov(execution::par, begin_a, end_a, begin_b, end_b);
         }
     }
 
-    template <class Range>
-    auto cov(scistats::execution::sequenced_policy e, const Range &a,
-             const Range &b) {
+    /// \brief Range cov with explicit policy
+    template <ExecutionPolicy P, Range T1, Range T2>
+    auto cov(P e, T1 &a, T2 &b) {
         return cov(e, a.begin(), a.end(), b.begin(), b.end());
     }
 
-    template <class Range>
-    auto cov(scistats::execution::parallel_policy e, const Range &a,
-             const Range &b) {
-        return cov(e, a.begin(), a.end(), b.begin(), b.end());
-    }
-
-    template <class Range> auto cov(const Range &a, const Range &b) {
+    /// \brief Range cov with implicit policy
+    template <Range T1, Range T2>
+    auto cov(T1 &a, T2 &b) {
         return cov(a.begin(), a.end(), b.begin(), b.end());
     }
 

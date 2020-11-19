@@ -14,61 +14,63 @@
 
 // Internal
 #include <scistats/common/execution.h>
-#include <scistats/common/promote.h>
 
 namespace scistats {
-    /// Sequential min value of sequence
-    template <class Iterator>
-    typename std::iterator_traits<Iterator>::value_type
-    min(scistats::execution::sequenced_policy, Iterator begin, Iterator end) {
-        return *std::min_element(begin, end);
-    }
-
-    /// Parallel min value of sequence
-    template <class Iterator>
-    typename std::iterator_traits<Iterator>::value_type
-    min(scistats::execution::parallel_policy, Iterator begin, Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        return async::parallel_reduce(
-            async::make_range(std::next(begin), end), *begin,
-            [](value_type x, value_type y) { return x < y ? x : y; });
-    }
-
-    template <class Iterator>
-    std::enable_if_t<ranges::input_iterator<Iterator>,
-                     typename Iterator::value_type>
-    min(Iterator begin, Iterator end) {
-        if (std::distance(begin, end) < 1000) {
-            return scistats::min(scistats::execution::seq, begin, end);
+    /// \brief Sequential min
+    template <Iterator T>
+    value_type<T> min(execution::sequenced_policy, T begin, T end) {
+        if (std::distance(begin, end) == 0) {
+            return NaN<value_type<T>>;
         } else {
-            return scistats::min(scistats::execution::par, begin, end);
+            return *std::min_element(begin, end);
         }
     }
 
-    template <class Range>
-    auto min(scistats::execution::sequenced_policy e, const Range &c) {
-        return scistats::min(e, c.begin(), c.end());
+    /// \brief Parallel min
+    template <Iterator T>
+    value_type<T> min(execution::parallel_policy, T begin, T end) {
+        return async::parallel_reduce(
+            async::make_range(std::next(begin), end), *begin,
+            [](value_type<T> x, value_type<T> y) { return x < y ? x : y; });
     }
 
-    template <class Range>
-    auto min(scistats::execution::parallel_policy e, const Range &c) {
-        return scistats::min(e, c.begin(), c.end());
+    /// \brief Threshold for using the parallel version of min
+    constexpr size_t implicit_parallel_min_threshold = 1000;
+
+    /// \brief Iterator min with implicit policy
+    template <Iterator T>
+    value_type<T> min(T begin, T end) {
+        auto size = static_cast<size_t>(std::distance(begin, end));
+        const bool run_seq = size < implicit_parallel_min_threshold;
+        if (run_seq) {
+            return min(execution::seq, begin, end);
+        } else {
+            return min(execution::par, begin, end);
+        }
     }
 
-    template <class Range> auto min(const Range &c) {
-        return scistats::min(c.begin(), c.end());
+    /// \brief Range min with policy
+    template <ExecutionPolicy P, Range T>
+    auto min(P e, T &c) {
+        return min(e, c.begin(), c.end());
     }
 
-    template <class VALUE_TYPE>
-    std::enable_if_t<!ranges::input_iterator<VALUE_TYPE>, VALUE_TYPE>
-    min(VALUE_TYPE a, VALUE_TYPE b) {
+    /// \brief Range min
+    template <Range T>
+    auto min(T &c) {
+        return min(c.begin(), c.end());
+    }
+
+    /// \brief Elements min
+    template <class T>
+    T min(T a, T b) {
         return std::min(a, b);
     }
 
-    template <class VALUE_TYPE, class... Args>
-    std::enable_if_t<!ranges::input_iterator<VALUE_TYPE>, VALUE_TYPE>
-    min(VALUE_TYPE a, VALUE_TYPE b, Args &&... args) {
-        return std::min(a, scistats::min(b, std::forward<Args>(args)...));
+    /// \brief Elements min
+    template <class T, class... Ts>
+    T min(T a, T b, Ts &&... args) {
+        return std::min(a, min(b, std::forward<Ts>(args)...));
     }
 
 } // namespace scistats

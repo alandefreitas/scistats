@@ -12,74 +12,67 @@
 #include <async++.h>
 
 // Internal
+#include <scistats/common/concepts.h>
 #include <scistats/common/execution.h>
-#include <scistats/common/promote.h>
+#include <scistats/common/type_traits.h>
+#include <scistats/math/sum.h>
 
 namespace scistats {
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    median_inplace(Iterator begin, Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        using return_type =
-            promote<typename std::iterator_traits<Iterator>::value_type>;
-        size_t s = std::distance(begin, end);
-        const bool is_odd = s & 1U;
-        Iterator middle = begin + s / 2;
-        std::nth_element(begin, middle, end);
+    /// \brief Iterator median with explicit policy
+    /// There's no implementation of the parallel policy
+    /// because most stable releases of C++20 compilers
+    /// don't include execution policies for nth_element
+    template <ExecutionPolicy P, Iterator T>
+    auto median([[maybe_unused]] P p, T begin, T end) {
+        size_t size = std::distance(begin, end);
+        const bool is_odd = size & 1U;
+        T upper_middle_element = std::next(begin, size / 2);
+        if (!std::is_sorted(begin, end)) {
+            std::nth_element(begin, upper_middle_element, end);
+        }
         if (is_odd) {
-            return static_cast<return_type>(*middle);
+            return static_cast<promote<value_type<T>>>(*upper_middle_element);
         } else {
-            Iterator lower_middle = std::max_element(begin, middle);
-            return static_cast<return_type>(*middle + *lower_middle) / 2.0;
+            T lower_middle_element =
+                std::max_element(begin, upper_middle_element);
+            return static_cast<promote<value_type<T>>>(*upper_middle_element +
+                                                       *lower_middle_element) /
+                   static_cast<promote<value_type<T>>>(2);
         }
     }
 
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    median_copy(Iterator begin, Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        std::vector<std::decay_t<value_type>> copy(begin, end);
-        return median_inplace(copy.begin(), copy.end());
+    /// \brief Iterator median with explicit policy
+    template <ExecutionPolicy P, ConstIterator T>
+    auto median(P p, T begin, T end) {
+        std::vector<std::decay_t<value_type<T>>> copy(begin, end);
+        return median(p, copy.begin(), copy.end());
     }
 
-    /// Sequential median value of sequence
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    median(scistats::execution::sequenced_policy, Iterator begin,
-           Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        using return_type =
-            promote<typename std::iterator_traits<Iterator>::value_type>;
-        using pointer_type = typename std::iterator_traits<Iterator>::pointer;
-        if constexpr (std::is_const_v<std::remove_pointer_t<pointer_type>>) {
-            return median_copy(begin, end);
+    /// \brief Threshold for using the parallel version of median
+    constexpr size_t implicit_parallel_median_threshold =
+        implicit_parallel_sum_threshold;
+
+    /// \brief Iterator median with implicit policy
+    template <Iterator T>
+    auto median(T begin, T end) {
+        auto size = static_cast<size_t>(std::distance(begin, end));
+        const bool run_seq = size < implicit_parallel_median_threshold;
+        if (run_seq) {
+            return median(scistats::execution::seq, begin, end);
         } else {
-            return median_inplace(begin, end);
+            return median(scistats::execution::par, begin, end);
         }
     }
 
-    /// Parallel median value of sequence
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    median(scistats::execution::parallel_policy, Iterator begin, Iterator end) {
-        return median(scistats::execution::seq, begin, end);
-    }
-
-    template <class Iterator> auto median(Iterator begin, Iterator end) {
-        return median(scistats::execution::seq, begin, end);
-    }
-
-    template <class Range>
-    auto median(scistats::execution::sequenced_policy e, const Range &c) {
+    /// \brief Range median with explicit policy
+    template <ExecutionPolicy P, Range T>
+    auto median(P e, T &c) {
         return median(e, c.begin(), c.end());
     }
 
-    template <class Range>
-    auto median(scistats::execution::parallel_policy e, const Range &c) {
-        return median(e, c.begin(), c.end());
-    }
-
-    template <class Range> auto median(const Range &c) {
+    /// \brief Range median with implicit policy
+    template <Range T>
+    auto median(T &c) {
         return median(c.begin(), c.end());
     }
 

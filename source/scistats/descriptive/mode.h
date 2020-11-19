@@ -11,56 +11,90 @@
 
 // External
 #include <async++.h>
+#include <range/v3/algorithm/max_element.hpp>
 
 // Internal
+#include <scistats/common/concepts.h>
 #include <scistats/common/execution.h>
-#include <scistats/common/promote.h>
+#include <scistats/common/type_traits.h>
+#include <scistats/math/sum.h>
 
 namespace scistats {
-    /// Sequential mode value of sequence
-    template <class Iterator>
-    typename std::iterator_traits<Iterator>::value_type
-    mode(scistats::execution::sequenced_policy, Iterator begin, Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        std::map<value_type, size_t> counts;
-        while (begin != end) {
-            auto it = counts.find(*begin);
-            if (it == counts.end()) {
-                counts[*begin] = 1;
-            } else {
-                ++counts[*begin];
-            }
+    /// \brief Iterator median with explicit policy
+    template <ExecutionPolicy P, Iterator T>
+    auto mode([[maybe_unused]] P p, T begin, T end) {
+        if (std::is_sorted(begin, end)) {
+            value_type<T> current_number = *begin;
+            value_type<T> mode = current_number;
+            size_t count = 1;
+            size_t count_mode = 1;
             ++begin;
+            while (begin != end) {
+                if (*begin == current_number) {
+                    ++count;
+                } else {
+                    if (count > count_mode) {
+                        count_mode = count;
+                        mode = current_number;
+                    }
+                    count = 1;
+                    current_number = *begin;
+                }
+                ++begin;
+            }
+            return mode;
+        } else {
+            std::map<value_type<T>, size_t> counts;
+            auto count_element = [&](const auto &el) {
+                auto it = counts.find(el);
+                if (it == counts.end()) {
+                    counts[el] = 1;
+                } else {
+                    ++counts[el];
+                }
+            };
+
+            // we cannot use async::parallel_for here
+            // because std::map is not thread safe
+            std::for_each(begin, end, count_element);
+
+            auto it = ranges::max_element(
+                counts, [](auto a, auto b) { return a.second < b.second; });
+            return it->first;
         }
-        auto it =
-            std::max_element(counts.begin(), counts.end(), [](auto a, auto b) {
-                return a.second < b.second;
-            });
-        return it->first;
     }
 
-    /// Parallel mode value of sequence
-    template <class Iterator>
-    typename std::iterator_traits<Iterator>::value_type
-    mode(scistats::execution::parallel_policy, Iterator begin, Iterator end) {
-        return mode(execution::seq, begin, end);
+    /// \brief Threshold for using the parallel version of mode
+    constexpr size_t implicit_parallel_mode_threshold =
+        implicit_parallel_sum_threshold;
+
+    /// \brief Iterator mode with implicit policy
+    template <Iterator T>
+    auto mode(T begin, T end) {
+        auto size = static_cast<size_t>(std::distance(begin, end));
+        const bool run_seq = size < implicit_parallel_mode_threshold;
+        if (run_seq) {
+            return mode(scistats::execution::seq, begin, end);
+        } else {
+            return mode(scistats::execution::par, begin, end);
+        }
     }
 
-    template <class Iterator> auto mode(Iterator begin, Iterator end) {
-        return mode(scistats::execution::seq, begin, end);
-    }
-
-    template <class Range>
-    auto mode(scistats::execution::sequenced_policy e, const Range &c) {
+    /// \brief Range mode with explicit policy
+    template <ExecutionPolicy P, Range T>
+    auto mode(P e, T &c) {
         return mode(e, c.begin(), c.end());
     }
 
-    template <class Range>
-    auto mode(scistats::execution::parallel_policy e, const Range &c) {
-        return mode(e, c.begin(), c.end());
+    /// \brief Range mode with implicit policy
+    template <Range T>
+    auto mode(T &c) {
+        return mode(c.begin(), c.end());
     }
 
-    template <class Range> auto mode(const Range &c) {
+    /// \brief Range mode with implicit policy
+    template <Range T>
+    auto mode(const T &c) {
         return mode(c.begin(), c.end());
     }
 

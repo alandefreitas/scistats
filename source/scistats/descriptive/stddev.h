@@ -14,65 +14,72 @@
 
 // Internal
 #include <scistats/common/execution.h>
-#include <scistats/common/promote.h>
 #include <scistats/descriptive/mean.h>
+#include <scistats/descriptive/var.h>
 
 namespace scistats {
-    /// Sequential stddev value of sequence
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    stddev(scistats::execution::sequenced_policy, Iterator begin,
-           Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        using return_type =
-            promote<typename std::iterator_traits<Iterator>::value_type>;
-        auto m = mean(execution::par, begin, end);
-        return_type sum{0.};
-        size_t c{0};
-        while (begin != end) {
-            sum += std::pow(*begin - m, 2.);
-            ++begin;
-            ++c;
-        }
-        return std::sqrt(sum / (c - 1));
+    /// \brief Iterator stddev with explicit policy (mean provided)
+    template <ExecutionPolicy P, Iterator T, Floating T2>
+    promote<value_type<T>> stddev(P p, T begin, T end, T2 mean) {
+        return std::sqrt(var(p, begin, end, mean));
     }
 
-    /// Parallel stddev value of sequence
-    template <class Iterator>
-    promote<typename std::iterator_traits<Iterator>::value_type>
-    stddev(scistats::execution::parallel_policy, Iterator begin, Iterator end) {
-        using value_type = typename std::iterator_traits<Iterator>::value_type;
-        using return_type =
-            promote<typename std::iterator_traits<Iterator>::value_type>;
-        return_type m = mean(execution::par, begin, end);
-        return_type sum = async::parallel_map_reduce(
-            async::make_range(begin, end), return_type{0.},
-            [&m](return_type x) {
-                return std::pow(static_cast<return_type>(x) - m, 2.);
-            },
-            [](return_type x, return_type y) { return x + y; });
-        return std::sqrt(sum / (std::distance(begin, end) - 1));
+    /// \brief Iterator stddev with explicit policy
+    template <ExecutionPolicy P, Iterator T>
+    promote<value_type<T>> stddev(P p, T begin, T end) {
+        auto m = mean(p, begin, end);
+        return stddev(p, begin, end, m);
     }
 
-    template <class Iterator> auto stddev(Iterator begin, Iterator end) {
-        if (std::distance(begin, end) < 1000) {
-            return stddev(scistats::execution::seq, begin, end);
+    /// \brief Threshold for using the parallel version of stddev
+    constexpr size_t implicit_parallel_stddev_threshold =
+        implicit_parallel_sum_threshold;
+
+    /// \brief Iterator stddev with implicit policy (mean provided)
+    template <Iterator T, Floating T2>
+    auto stddev(T begin, T end, T2 mean) {
+        auto size = static_cast<size_t>(std::distance(begin, end));
+        const bool run_seq = size < implicit_parallel_stddev_threshold;
+        if (run_seq) {
+            return stddev(execution::seq, begin, end, mean);
         } else {
-            return stddev(scistats::execution::par, begin, end);
+            return stddev(execution::par, begin, end, mean);
         }
     }
 
-    template <class Range>
-    auto stddev(scistats::execution::sequenced_policy e, const Range &c) {
+    /// \brief Iterator stddev with implicit policy
+    template <Iterator T>
+    auto stddev(T begin, T end) {
+        auto size = static_cast<size_t>(std::distance(begin, end));
+        const bool run_seq = size < implicit_parallel_stddev_threshold;
+        if (run_seq) {
+            return stddev(execution::seq, begin, end);
+        } else {
+            return stddev(execution::par, begin, end);
+        }
+    }
+
+    /// \brief Range stddev with explicit policy (mean provided)
+    template <ExecutionPolicy P, Range T, Floating T2>
+    auto stddev(P e, T &c, T2 mean) {
+        return stddev(e, c.begin(), c.end(), mean);
+    }
+
+    /// \brief Range stddev with explicit policy
+    template <ExecutionPolicy P, Range T>
+    auto stddev(P e, T &c) {
         return stddev(e, c.begin(), c.end());
     }
 
-    template <class Range>
-    auto stddev(scistats::execution::parallel_policy e, const Range &c) {
-        return stddev(e, c.begin(), c.end());
+    /// \brief Range stddev with implicit policy (mean provided)
+    template <Range T, Floating T2>
+    auto stddev(T &c, T2 mean) {
+        return stddev(c.begin(), c.end(), mean);
     }
 
-    template <class Range> auto stddev(const Range &c) {
+    /// \brief Range stddev with implicit policy
+    template <Range T>
+    auto stddev(T &c) {
         return stddev(c.begin(), c.end());
     }
 
