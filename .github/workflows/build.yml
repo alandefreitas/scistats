@@ -45,8 +45,6 @@ jobs:
             name: "Windows / MSVC",
             os: windows-2019,
             config: Release,
-            cc: "cl",
-            cxx: "cl",
             cxx_standard: 20,
             cmake_extra_args: -G "Visual Studio 16 2019" -A x64 -DCMAKE_CXX_FLAGS="/O2",
             sudocmd: "",
@@ -54,13 +52,11 @@ jobs:
             cores: 2,
           }
           - {
-            name: "Ubuntu / GCC 9",
+            name: "Ubuntu / GCC 10",
             os: ubuntu-20.04,
             config: Release,
-            cc: "gcc-9",
-            cxx: "g++-9",
             cxx_standard: 20,
-            cmake_extra_args: "-DCMAKE_C_COMPILER=/usr/bin/gcc-9 -DCMAKE_CXX_COMPILER=/usr/bin/g++-9  -DCMAKE_CXX_FLAGS=\"-O2\"",
+            cmake_extra_args: "-DCMAKE_C_COMPILER=/usr/bin/gcc-10 -DCMAKE_CXX_COMPILER=/usr/bin/g++-10  -DCMAKE_CXX_FLAGS=\"-O2\"",
             sudocmd: "sudo",
             artifact_name: "Linux",
             cores: 2,
@@ -79,6 +75,19 @@ jobs:
           }
     steps:
       - uses: actions/checkout@v2
+      - name: Install
+        run: |
+          if [ "${{ matrix.os }}" = "ubuntu-20.04" ]; then
+            sudo apt-get install -y g++-10 g++-10-multilib
+            echo "::set-env name=CC::gcc-10"
+            echo "::set-env name=CXX::g++-10"
+          fi
+          if [ "${{ matrix.os }}" = "macos-11.0" ]; then
+            ls -ls /Applications/
+            sudo xcode-select -switch /Applications/Xcode_${{ matrix.version }}.app
+            echo "::set-env name=CC::clang"
+            echo "::set-env name=CXX::clang++"
+          fi
       - name: Create Build Directory
         run: mkdir build
       - name: Configure Build Script
