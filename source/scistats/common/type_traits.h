@@ -5,73 +5,54 @@
 #ifndef SCISTATS_TYPE_TRAITS_H
 #define SCISTATS_TYPE_TRAITS_H
 
-#include <type_traits>
+// C++
+#include <iterator>
 
+// External
+
+// Internal
+#include <scistats/common/concepts.h>
 #include <scistats/common/execution.h>
 
 namespace scistats {
+    template <typename T>
+    struct iterator_or_range_traits {};
 
-    template <typename C> struct is_iterable {
-        typedef long false_type;
-        typedef char true_type;
-
-        template <class T> static false_type check(...);
-        template <class T>
-        static true_type check(int, typename T::const_iterator = C().end());
-
-        enum { value = sizeof(check<C>(0)) == sizeof(true_type) };
+    template <Iterator T>
+    struct iterator_or_range_traits<T> {
+        using type = typename std::iterator_traits<T>::value_type;
     };
 
-    template <typename C> constexpr bool is_iterable_v = is_iterable<C>::value;
-
-    template <typename C> struct has_value_type {
-        typedef long false_type;
-        typedef char true_type;
-
-        template <class T> static false_type check(...);
-        template <class T>
-        static true_type check(int, typename T::value_type = *C().begin());
-
-        enum { value = sizeof(check<C>(0)) == sizeof(true_type) };
+    template <Range T>
+    struct iterator_or_range_traits<T> {
+        using type = typename T::value_type;
     };
 
-    template <typename C>
-    constexpr bool has_value_type_v = has_value_type<C>::value;
+    template <typename T>
+    using value_type = typename iterator_or_range_traits<T>::type;
 
-    template <typename C> struct has_iterable_value_type {
-        typedef long false_type;
-        typedef char true_type;
+    template <typename T>
+    using pointer_type = typename std::iterator_traits<T>::pointer_type;
 
-        template <class T> static false_type check(...);
-        template <class T>
-        static true_type
-        check(int,
-              typename T::value_type::value_type = *(C().begin()->begin()));
+    template <class INTEGER>
+    using promote_signed_integral = std::conditional_t<
+        sizeof(INTEGER) <= 4, float,
+        std::conditional_t<sizeof(INTEGER) <= 8, double, long double>>;
 
-        enum { value = sizeof(check<C>(0)) == sizeof(true_type) };
-    };
+    template <class INTEGER>
+    using promote_unsigned_interal =
+        std::conditional_t<sizeof(INTEGER) <= 4, double, long double>;
 
-    template <typename C>
-    constexpr bool has_iterable_value_type_v =
-        has_iterable_value_type<C>::value;
+    template <class INTEGER>
+    using promote_integral =
+        std::conditional_t<std::is_signed_v<INTEGER>,
+                           promote_signed_integral<INTEGER>,
+                           promote_unsigned_interal<INTEGER>>;
 
-    // Something like std::vector<double>
-    template <class C>
-    struct is_iterable_value
-        : public std::integral_constant<
-              bool, is_iterable_v<C> && !has_iterable_value_type_v<C>> {};
-
-    template <typename C>
-    constexpr bool is_iterable_value_v = is_iterable_value<C>::value;
-
-    // Something like std::vector<std::vector<double>>
-    template <class C>
-    struct is_iterable_iterable
-        : public std::integral_constant<
-              bool, is_iterable_v<C> && has_iterable_value_type_v<C>> {};
-
-    template <typename C>
-    constexpr bool is_iterable_iterable_v = is_iterable_iterable<C>::value;
+    template <class NUMBER_TYPE>
+    using promote =
+        std::conditional_t<std::is_integral_v<NUMBER_TYPE>,
+                           promote_integral<NUMBER_TYPE>, NUMBER_TYPE>;
 
 } // namespace scistats
 
