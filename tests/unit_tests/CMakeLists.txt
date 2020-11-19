@@ -1,30 +1,37 @@
 #######################################################
-### Catch2 - Unit tests                             ###
+### External Libs                                   ###
 #######################################################
-# Find or get Catch2
-# Note that CPM will try to "find_package(Catch2)" before downloading it
-# See the option CPM_USE_LOCAL_PACKAGES in ROOT/CMakeLists.txt
-# This is important: see One Definition Rule (ODR)
-CPMAddPackage(
-        NAME Catch2
-        GITHUB_REPOSITORY catchorg/Catch2
-        VERSION 2.12.1
-        OPTIONS
-        "CATCH_USE_VALGRIND OFF"
-        "CATCH_BUILD_TESTING OFF"
-        "CATCH_BUILD_EXAMPLES OFF"
-        "CATCH_BUILD_EXTRA_TESTS OFF"
-        "CATCH_ENABLE_COVERAGE OFF"
-        "CATCH_ENABLE_WERROR ON"
-        "CATCH_INSTALL_DOCS OFF"
-        "CATCH_INSTALL_HELPERS OFF"
-)
-include(${Catch2_SOURCE_DIR}/contrib/Catch.cmake)
+CPMAddPackage(NAME ut GIT_REPOSITORY https://github.com/boost-ext/ut/ GIT_TAG master VERSION 1.1.8.1)
 
 #######################################################
 ### Unit Tests                                      ###
 #######################################################
+# Common
+add_executable(ut_common ut_common.cpp)
+target_link_libraries(ut_common PRIVATE scistats boost.ut)
+add_test(NAME common_statistics COMMAND ut_common)
+
+# Math
+add_executable(ut_math ut_math.cpp)
+target_link_libraries(ut_math PRIVATE scistats boost.ut)
+add_test(NAME math_statistics COMMAND ut_math)
+
 # Descriptive statistics
-add_executable(unit_test_descriptive unit_test_descriptive.cpp)
-target_link_libraries(unit_test_descriptive PRIVATE scistats Catch2)
-catch_discover_tests(unit_test_descriptive)
+add_executable(ut_descriptive ut_descriptive.cpp)
+target_link_libraries(ut_descriptive PRIVATE scistats boost.ut)
+add_test(NAME descriptive_statistics COMMAND ut_descriptive)
+
+# Probability Distributions
+add_executable(ut_distribution ut_distribution.cpp)
+target_link_libraries(ut_distribution PRIVATE scistats boost.ut)
+add_test(NAME distribution_statistics COMMAND ut_distribution)
+
+# Hypothesis Tests
+add_executable(ut_hypothesis ut_hypothesis.cpp)
+target_link_libraries(ut_hypothesis PRIVATE scistats boost.ut)
+add_test(NAME hypothesis_statistics COMMAND ut_hypothesis)
+
+# Bayesian statistics
+add_executable(ut_bayesian ut_bayesian.cpp)
+target_link_libraries(ut_bayesian PRIVATE scistats boost.ut)
+add_test(NAME bayesian_statistics COMMAND ut_bayesian)
