@@ -29,28 +29,19 @@ jobs:
       matrix:
         config:
           # see: https://github.com/actions/virtual-environments
-          - {
-            name: "Windows X86 / MSVC",
-            os: windows-2019,
-            config: Release,
-            cc: "cl",
-            cxx: "cl",
-            cxx_standard: 20,
-            cmake_extra_args: -G "Visual Studio 16 2019" -A Win32,
-            sudocmd: "",
-            artifact_name: "Windows x86",
-            cores: 2,
-          }
-          - {
-            name: "Windows / MSVC",
-            os: windows-2019,
-            config: Release,
-            cxx_standard: 20,
-            cmake_extra_args: -G "Visual Studio 16 2019" -A x64 -DCMAKE_CXX_FLAGS="/O2",
-            sudocmd: "",
-            artifact_name: "Windows x64",
-            cores: 2,
-          }
+          # we are disabling windows and mac os because they the environments
+          # do not come with C++20 by default
+
+#          - {
+#            name: "Windows / MSVC",
+#            os: windows-2019,
+#            config: Release,
+#            cxx_standard: 20,
+#            cmake_extra_args: -G "Visual Studio 16 2019" -A x64 -DCMAKE_CXX_FLAGS="/O2",
+#            sudocmd: "",
+#            artifact_name: "Windows x64",
+#            cores: 2,
+#          }
           - {
             name: "Ubuntu / GCC 10",
             os: ubuntu-20.04,
@@ -61,18 +52,18 @@ jobs:
             artifact_name: "Linux",
             cores: 2,
           }
-          - {
-            name: "MacOSX / Clang 11",
-            os: macos-11.0,
-            config: Release,
-            cc: "clang",
-            cxx: "clang++",
-            cxx_standard: 20,
-            cmake_extra_args: "-DCMAKE_CXX_FLAGS=\"-O2\"",
-            sudocmd: "sudo",
-            artifact_name: "MacOSX",
-            cores: 4,
-          }
+#          - {
+#            name: "MacOSX / Clang 11",
+#            os: macos-11.0,
+#            config: Release,
+#            cc: "clang",
+#            cxx: "clang++",
+#            cxx_standard: 20,
+#            cmake_extra_args: "-DCMAKE_CXX_FLAGS=\"-O2\"",
+#            sudocmd: "sudo",
+#            artifact_name: "MacOSX",
+#            cores: 4,
+#          }
     steps:
       - uses: actions/checkout@v2
       - name: Update GCC
