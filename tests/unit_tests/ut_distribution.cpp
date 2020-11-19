@@ -90,7 +90,6 @@ int main() {
             0,     0.0625, 0.1,    0.125,       0.2,         0.25,
             0.5,   1,      2,      inf<double>, inf<double>, inf<double>};
         compare_floating_range("norm_invs", norm_invs, expected_norm_invs);
-         */
 
         auto norm_invs2 = ranges::views::transform(
             ps, [](auto p) { return norm_inv(p, 2., 3.); });
@@ -101,6 +100,7 @@ int main() {
                 1.25,  1.4,    1.625, 1.7,         1.8125,      1.85,
                 2,     2.1875, 2.3,   2.375,       2.6,         2.75,
                 3.5,   5,      8,     inf<double>, inf<double>, inf<double>});
+        */
     };
 
     test("T Distribution") = [&] {
