@@ -93,7 +93,7 @@ namespace scistats {
     /// \brief Student's t inverse cumulative distribution function
     template <Floating T1, FloatingOrInteger T2>
     T1 t_inv(T1 p, T2 v) {
-        // T1he inverse cdf of 0 is -Inf, and the inverse cdf of 1 is Inf.
+        // The inverse cdf of 0 is -Inf, and the inverse cdf of 1 is Inf.
         if (abs(p) <= epsilon<T1> && v > 0) {
             return -inf<T1>;
         }
@@ -111,7 +111,8 @@ namespace scistats {
         if (abs(v - 1) <= epsilon<T2>) {
             return tan(pi<T1> * (p - 0.5));
         }
-        // For small d.f., call betaincinv which uses Newton's method
+
+            // For small d.f., call betaincinv which uses Newton's method
         else if (v < 1000) {
             T1 q = p - .5;
             T2 df = v;
