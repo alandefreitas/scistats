@@ -26,6 +26,7 @@
 #include <scistats/hypothesis/tail.h>
 #include <scistats/math/abs.h>
 #include <scistats/math/acot.h>
+#include <scistats/math/almost_equal.h>
 #include <scistats/math/beta.h>
 #include <scistats/math/beta_inc.h>
 #include <scistats/math/beta_inc_inv.h>

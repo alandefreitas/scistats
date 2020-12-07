@@ -41,7 +41,6 @@ if (UNIX)
     endif ()
 endif ()
 
-
 # Ranges
 CPMAddPackage(
         NAME range-v3

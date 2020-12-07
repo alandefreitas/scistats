@@ -95,6 +95,9 @@ If no execution policy is provided, scistats will infer the best execution polic
 ## Roadmap
 
 * Parallel Arithmetic
+* Constants
+* Time shortcuts
+* Random shortcuts
 * Descriptive statistics <sup> [1](https://docs.python.org/3/library/statistics.html) </sup> <sup> [2](https://docs.scipy.org/doc/scipy/reference/stats.html) </sup> <sup> [3](https://www.mathworks.com/help/matlab/descriptive-statistics.html) </sup>
 * Probability distributions <sup> [1](https://www.mathworks.com/help/stats/probability-distributions-1.html) </sup>
 * Hypothesis Tests <sup> [1](https://www.mathworks.com/help/stats/hypothesis-tests-1.html) </sup>
