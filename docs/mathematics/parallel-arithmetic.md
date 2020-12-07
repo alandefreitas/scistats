@@ -23,7 +23,7 @@ sum(x)
 |   Function        |   Description     | 
 |-------------------|-------------------|
 | `sum`              | summation        |
-| `prof`         | product     |
+| `prod`         | product     |
 
 
 

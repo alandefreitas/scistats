@@ -1,12 +1,12 @@
 ---
 layout: default
-title: Central tendency
+title: Central Tendency
 nav_order: 1
 has_children: false
 parent: Descriptive statistics
 has_toc: false
 ---
-# Central tendency
+# Central Tendency
 
 With ranges:
 

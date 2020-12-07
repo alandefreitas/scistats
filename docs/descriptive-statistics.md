@@ -8,9 +8,9 @@ has_toc: false
 # Descriptive statistics
 
 
-- [Central tendency](descriptive-statistics/central-tendency.md)
+- [Central Tendency](descriptive-statistics/central-tendency.md)
 - [Dispersion](descriptive-statistics/dispersion.md)
-- [Correlation](descriptive-statistics/correlation.md)
+- [Multivariate Analysis](descriptive-statistics/multivariate-analysis.md)
 
 
 <!-- Generated with mdsplit: https://github.com/alandefreitas/mdsplit -->
