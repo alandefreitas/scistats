@@ -71,13 +71,6 @@ jobs:
       - name: Update Clang
         if: matrix.config.os == 'macos-11.0'
         run: |
-          ls -ls /Applications/
-          sudo xcode-select -switch /Applications/Xcode.app
-          name=CC::clang
-          name=CXX::clang++
-      - name: Update Clang
-        if: matrix.config.os == 'macos-11.0'
-        run: |
           curl --output clang.tar.xz -L https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/clang+llvm-11.0.0-x86_64-apple-darwin.tar.xz
           mkdir clang
           tar -xvJf clang.tar.xz -C clang
