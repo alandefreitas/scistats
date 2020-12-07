@@ -1,7 +1,10 @@
 #include <scistats/time/tictoc.h>
+#include <scistats/time/timeit.h>
 #include <scistats/time/minibench.h>
+#include <scistats/random/randi.h>
 #include <scistats/descriptive/mean.h>
-#include <scistats/descriptive/stddev.h>
+#include <scistats/descriptive/percentile.h>
+#include <scistats/hypothesis/t_test.h>
 #include <matplot/matplot.h>
 #include <random>
 
@@ -15,37 +18,49 @@ int main() {
     std::cout << "Printing s took: " << t << " nanoseconds" << std::endl;
 
     constexpr size_t max_vector_size = 1000;
-    std::random_device r;
-    std::mt19937 g(r());
+
+    double vt = timeit([&]() {
+        std::vector<int> x(max_vector_size);
+    });
+    std::cout << "Creating vector takes " << vt << " nanoseconds" << std::endl;
+
     std::vector<double> xs;
     std::vector<double> means_1;
     std::vector<double> means_2;
-    std::vector<double> stddevs_1;
-    std::vector<double> stddevs_2;
+    std::vector<double> y_neg_delta_1;
+    std::vector<double> y_pos_delta_1;
+    std::vector<double> y_neg_delta_2;
+    std::vector<double> y_pos_delta_2;
+    std::vector<double> ps;
     for (size_t i = 10; i < max_vector_size; ++i) {
         std::vector<int> v(i);
         std::iota(v.begin(), v.end(), 0);
-        std::uniform_int_distribution<size_t> d(0, i - 1);
 
         auto t1 = minibench([&]() {
-            auto it = std::find(v.begin(), v.end(), v[d(g)]);
+            auto it = std::find(v.begin(), v.end(), v[randi(0, i - 1)]);
         });
 
         auto t2 = minibench([&]() {
-            auto ok = std::binary_search(v.begin(), v.end(), v[d(g)]);
+            auto ok = std::binary_search(v.begin(), v.end(), v[randi(0, i - 1)]);
         });
 
         xs.emplace_back(static_cast<double>(i));
         means_1.emplace_back(static_cast<double>(mean(t1)));
         means_2.emplace_back(static_cast<double>(mean(t2)));
-        stddevs_1.emplace_back(static_cast<double>(stddev(t1)));
-        stddevs_2.emplace_back(static_cast<double>(stddev(t2)));
+        y_neg_delta_1.emplace_back(means_1.back() - static_cast<double>(percentile(t1, 25)));
+        y_pos_delta_1.emplace_back(static_cast<double>(percentile(t1, 75)) - means_1.back());
+        y_neg_delta_2.emplace_back(means_2.back() - static_cast<double>(percentile(t2, 25)));
+        y_pos_delta_2.emplace_back(static_cast<double>(percentile(t2, 75)) - means_2.back());
+        ps.emplace_back(t_test(t1, t2, false));
     }
 
     auto ax = matplot::gca();
-    ax->errorbar(xs, means_1, stddevs_1)->filled_curve(true);
+    ax->errorbar(xs, means_1, y_neg_delta_1, y_pos_delta_1, {}, {})->filled_curve(true);
     ax->hold(true);
-    ax->errorbar(xs, means_2, stddevs_2)->filled_curve(true);
-    ax->legend({"Sequential Search", "Binary Search"});
+    ax->errorbar(xs, means_2, y_neg_delta_2, y_pos_delta_2, {}, {})->filled_curve(true);
+
+    ax->plot(xs, ps)->use_y2(true);
+    std::cout << "ps: " << ranges::views::all(ps) << std::endl;
+    ax->legend({"Sequential Search", "Binary Search", "p-value"});
     matplot::show();
 }
