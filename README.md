@@ -33,17 +33,15 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 </details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Examples
+## Descriptive statistics
 
-The examples assume we are working in the `scistats` namespace.
-
-### Descriptive statistics
-
-#### Central tendency
+### Central tendency
 
 With ranges:
 
 ```cpp
+using namespace scistats;
+// ...
 mean(x); 
 ```
 
@@ -70,7 +68,7 @@ Other functions to measure central tendency are:
 | `median(x)`     | Median  |
 | `mode(x)`       | Mode  |
 
-#### Dispersion
+### Dispersion
 
 To calculate the standard deviation of a data set:
 
@@ -95,7 +93,7 @@ Other functions to measure dispersion are:
 | `bounds(x)`     | Minimum and Maximum Values  |
 | `percentile(x,p)`       | Calculate `p`-th percentile  |
 
-#### Correlation
+### Correlation
 
 To calculate the covariance of two data sets:
 
@@ -103,7 +101,7 @@ To calculate the covariance of two data sets:
 cov(x,y);
 ```
 
-### Probability Distributions
+## Probability Distributions
 
 To get the probability of `x` in a normal distribution:
 
@@ -130,7 +128,7 @@ norm_inv(p);
 
 where `df` is the degrees of freedom in the probability distribution.
 
-### Hypothesis Testing
+## Hypothesis Testing
 
 To test the hypothesis that the values in `x` come from a distribution with `mean(x)` is zero:
 
@@ -157,7 +155,7 @@ t_test_interval(x);
 t_test_interval(x,y);
 ```
 
-### Bayesian statistics
+## Bayesian statistics
 
 Given (i) the probability `P(E|H)=likelihood` of the evidence `E` given the hypothesis `H`, (ii) the prior probability `p_hypothesis` of hypothesis `H`, and (iii) the prior probability `p_evidence` of evidence `E`, we can calculate the probability `P(H|E)` of a hypothesis `H` given the evidence `E` with:  
 
@@ -171,9 +169,9 @@ Given `P(E|H)` and `P(E|not H)`, we can calculate the bayes factor:
 bayes_factor(p_evidence_given_h, p_evidence_given_not_h)
 ``` 
 
-### Mathematics
+## Mathematics
 
-#### Parallel Arithmetic
+### Parallel Arithmetic
 
 To sum the elements of a range in parallel:
 
@@ -193,7 +191,7 @@ sum(x)
 | `prof`         | product     |
 
 
-#### Constants
+### Constants
 
 The header `scistats/math/constants.h` defines a number of constants:
 
@@ -204,7 +202,7 @@ The header `scistats/math/constants.h` defines a number of constants:
 | `inf`             | the number representing infinity   | +inf  |
 | `NaN`             | the number representing not a number   | nan  |
 
-#### Functions
+### Functions
 
 Some helper functions:
 
@@ -228,7 +226,7 @@ Some helper functions:
 `tgamma`      |   tgamma  |  
 `xinbta`      |   xinbta  |  
 
-#### Measuring Time
+### Measuring Time
 
 To measure the time between two operations:
 
@@ -256,7 +254,7 @@ std::cout << "Mean: " << mean(t) << std::endl;
 std::cout << "Standard Deviation: " << stddev(t) << std::endl;
 ```
 
-#### Random Number Generators
+### Random Number Generators
 
 To generate a random integer between `a` and `b` with a reasonable 
 random number generator:
