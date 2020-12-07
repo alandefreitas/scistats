@@ -9,12 +9,7 @@ has_toc: false
 
 > High-Performance Descriptive Statistics and Hypothesis Tests in C++20
 
-<p align="center">
-
-
 [![Scistats](img/banner.gif)](https://alandefreitas.github.io/scistats/)
-
-</p>
 
 <br/>
 
