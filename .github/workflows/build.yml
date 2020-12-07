@@ -29,9 +29,7 @@ jobs:
       matrix:
         config:
           # see: https://github.com/actions/virtual-environments
-          # we are disabling windows and mac os because they the environments
-          # do not come with C++20 by default
-
+          # we still need to figure out a way to update to C++20 from the command line on windows
 #          - {
 #            name: "Windows / MSVC",
 #            os: windows-2019,
@@ -52,18 +50,16 @@ jobs:
             artifact_name: "Linux",
             cores: 2,
           }
-#          - {
-#            name: "MacOSX / Clang 11",
-#            os: macos-11.0,
-#            config: Release,
-#            cc: "clang",
-#            cxx: "clang++",
-#            cxx_standard: 20,
-#            cmake_extra_args: "-DCMAKE_CXX_FLAGS=\"-O2\"",
-#            sudocmd: "sudo",
-#            artifact_name: "MacOSX",
-#            cores: 4,
-#          }
+          - {
+            name: "Mac OS / Clang 11",
+            os: macos-11.0,
+            config: Release,
+            cxx_standard: 20,
+            cmake_extra_args: "-DCMAKE_C_COMPILER=/usr/local/bin/clang -DCMAKE_CXX_COMPILER=/usr/local/bin/clang++  -DCMAKE_CXX_FLAGS=\"-O2\"",
+            sudocmd: "sudo",
+            artifact_name: "MacOSX",
+            cores: 4,
+          }
     steps:
       - uses: actions/checkout@v2
       - name: Update GCC
@@ -79,6 +75,16 @@ jobs:
           sudo xcode-select -switch /Applications/Xcode.app
           name=CC::clang
           name=CXX::clang++
+      - name: Update Clang
+        if: matrix.config.os == 'macos-11.0'
+        run: |
+          curl --output clang.tar.xz -L https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/clang+llvm-11.0.0-x86_64-apple-darwin.tar.xz
+          mkdir clang
+          tar -xvJf clang.tar.xz -C clang
+          cd clang/clang+llvm-11.0.0-x86_64-apple-darwin
+          sudo cp -R * /usr/local/
+          export CC=/usr/local/bin/clang
+          export CXX=/usr/local/bin/clang++
       - name: Create Build Directory
         run: mkdir build
       - name: Configure Build Script
