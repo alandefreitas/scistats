@@ -1,9 +1,8 @@
 ---
 layout: default
 title: Hypothesis Testing
-nav_order: 3
+nav_order: 4
 has_children: false
-parent: Examples
 has_toc: false
 ---
 # Hypothesis Testing

@@ -4,7 +4,6 @@ title: Central tendency
 nav_order: 1
 has_children: false
 parent: Descriptive statistics
-grand_parent: Examples
 has_toc: false
 ---
 # Central tendency
@@ -12,6 +11,8 @@ has_toc: false
 With ranges:
 
 ```cpp
+using namespace scistats;
+// ...
 mean(x); 
 ```
 

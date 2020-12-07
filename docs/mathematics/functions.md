@@ -4,7 +4,6 @@ title: Functions
 nav_order: 3
 has_children: false
 parent: Mathematics
-grand_parent: Examples
 has_toc: false
 ---
 # Functions

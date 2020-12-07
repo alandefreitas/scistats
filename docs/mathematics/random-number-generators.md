@@ -4,7 +4,6 @@ title: Random Number Generators
 nav_order: 5
 has_children: false
 parent: Mathematics
-grand_parent: Examples
 has_toc: false
 ---
 # Random Number Generators
