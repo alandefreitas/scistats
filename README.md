@@ -1,8 +1,13 @@
 # Scistats
 
-> Descriptive Statistics and Hypothesis Tests
+> High-Performance Descriptive Statistics and Hypothesis Tests in C++20
 
-[![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
+<p align="center">
+
+
+[![Scistats](./docs/img/banner.gif)](https://alandefreitas.github.io/scistats/)
+
+</p>
 
 <br/>
 
@@ -35,7 +40,7 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 
 ## Descriptive statistics
 
-### Central tendency
+### Central Tendency
 
 With ranges:
 
@@ -93,7 +98,7 @@ Other functions to measure dispersion are:
 | `bounds(x)`     | Minimum and Maximum Values  |
 | `percentile(x,p)`       | Calculate `p`-th percentile  |
 
-### Correlation
+### Multivariate Analysis
 
 To calculate the covariance of two data sets:
 
@@ -188,7 +193,7 @@ sum(x)
 |   Function        |   Description     | 
 |-------------------|-------------------|
 | `sum`              | summation        |
-| `prof`         | product     |
+| `prod`         | product     |
 
 
 ### Constants
