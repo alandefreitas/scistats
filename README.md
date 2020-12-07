@@ -22,9 +22,9 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 <summary>Table of Contents</summary>
 
 - [Descriptive statistics](#descriptive-statistics)
-  - [Central tendency](#central-tendency)
+  - [Central Tendency](#central-tendency)
   - [Dispersion](#dispersion)
-  - [Correlation](#correlation)
+  - [Multivariate Analysis](#multivariate-analysis)
 - [Probability Distributions](#probability-distributions)
 - [Hypothesis Testing](#hypothesis-testing)
 - [Bayesian statistics](#bayesian-statistics)
