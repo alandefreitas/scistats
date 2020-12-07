@@ -88,14 +88,10 @@ int main() {
 
     test("Correlation") = [&] {
         test("Covariance") = [&] {
-            expect(cov(x, x) == 1.17424_f);
-            expect(cov(execution::par, x, x) == 1.17424_f);
-
-            // std::vector<int> x10 = {0,  10, 10, 20, 30, 20,
-                                    // 10, 30, 20, 40, 20, 20};
-            /* still fails on GCC/Clang */
-            // expect(cov(x, x10) == 7.19697_f);
-            // expect(cov(execution::par, x, x10) == 7.19697_f);
+            std::vector<int> A = {3, 6, 4};
+            std::vector<int> B = {7, 12, -9};
+            expect(cov(A, B) == 6.8333_f);
+            expect(cov(execution::par, A, B) == 6.8333_f);
         };
     };
 
