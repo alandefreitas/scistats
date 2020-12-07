@@ -7,9 +7,14 @@ has_toc: false
 ---
 # Scistats
 
-> Descriptive Statistics and Hypothesis Tests
+> High-Performance Descriptive Statistics and Hypothesis Tests in C++20
 
-[![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
+<p align="center">
+
+
+[![Scistats](img/banner.gif)](https://alandefreitas.github.io/scistats/)
+
+</p>
 
 <br/>
 
@@ -21,9 +26,9 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 
 
 - [Descriptive statistics](descriptive-statistics.md)
-  - [Central tendency](descriptive-statistics/central-tendency.md)
+  - [Central Tendency](descriptive-statistics/central-tendency.md)
   - [Dispersion](descriptive-statistics/dispersion.md)
-  - [Correlation](descriptive-statistics/correlation.md)
+  - [Multivariate Analysis](descriptive-statistics/multivariate-analysis.md)
 - [Probability Distributions](probability-distributions.md)
 - [Hypothesis Testing](hypothesis-testing.md)
 - [Bayesian statistics](bayesian-statistics.md)
