@@ -7,6 +7,8 @@ has_toc: false
 ---
 # Roadmap
 
+Some functions we plan to implement are:
+
 * Math
     * Parallel Arithmetic
     * Constants <sup> [1](https://www.gnu.org/software/gsl/doc/html/math.html#mathematical-constants) </sup>

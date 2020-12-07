@@ -11,8 +11,6 @@ has_toc: false
 
 [![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
 
-> ** This is work in progress!**
-
 <br/>
 
 Statistics help us analyze and interpret data. High-performance statistical algorithms help us analyze and interpret a lot of data. Most environments provide convenient helper functions to calculate basic statistics. Scistats aims to provide high-performance statistical algorithms with an easy and familiar interface. All algorithms can run sequentially or in parallel, depending on how much data you have.
@@ -27,11 +25,15 @@ Statistics help us analyze and interpret data. High-performance statistical algo
     - [Central tendency](examples/descriptive-statistics/central-tendency.md)
     - [Dispersion](examples/descriptive-statistics/dispersion.md)
     - [Correlation](examples/descriptive-statistics/correlation.md)
-  - [Probability](examples/probability.md)
+  - [Probability Distributions](examples/probability-distributions.md)
   - [Hypothesis Testing](examples/hypothesis-testing.md)
   - [Bayesian statistics](examples/bayesian-statistics.md)
-  - [Data processing](examples/data-processing.md)
-    - [Outliers](examples/data-processing/outliers.md)
+  - [Mathematics](examples/mathematics.md)
+    - [Parallel Arithmetic](examples/mathematics/parallel-arithmetic.md)
+    - [Constants](examples/mathematics/constants.md)
+    - [Functions](examples/mathematics/functions.md)
+    - [Measuring Time](examples/mathematics/measuring-time.md)
+    - [Random Number Generators](examples/mathematics/random-number-generators.md)
 - [Roadmap](roadmap.md)
 - [Integration](integration.md)
   - [Build from Source](integration/build-from-source.md)

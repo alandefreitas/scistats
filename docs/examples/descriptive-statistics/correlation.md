@@ -9,7 +9,11 @@ has_toc: false
 ---
 # Correlation
 
-> Work in progress
+To calculate the covariance of two data sets:
+
+```cpp
+cov(x,y);
+```
 
 
 

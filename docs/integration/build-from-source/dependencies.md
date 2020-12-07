@@ -9,7 +9,7 @@ has_toc: false
 ---
 # Dependencies
 
-* C++17
+* C++20
 * CMake 3.14+
 
 
@@ -27,20 +27,11 @@ The output should be something like:
 g++-8 (Ubuntu 8.4.0-1ubuntu1~18.04) 8.4.0
 ```
 
-If you see a version before GCC-8, update it with
+If you see a version before GCC-10, update it with
 
 ```bash
 sudo apt update
-sudo apt install gcc-8
-sudo apt install g++-8
-```
-
-To update to any other version, like GCC-9 or GCC-10:
-
-```bash
-sudo apt install build-essential
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update
+sudo apt install gcc-10
 sudo apt install g++-10
 ```
 
@@ -77,7 +68,7 @@ or download the most recent version from [cmake.org](https://cmake.org/).
 [Later](build-the-examples.md) when running CMake, make sure you are using GCC-8 or higher by appending the following options:
 
 ```bash
--DCMAKE_C_COMPILER=/usr/bin/gcc-8 -DCMAKE_CXX_COMPILER=/usr/bin/g++-8
+-DCMAKE_C_COMPILER=/usr/bin/gcc-10 -DCMAKE_CXX_COMPILER=/usr/bin/g++-10
 ```
 
 
@@ -94,18 +85,20 @@ clang --version
 The output should have something like
 
 ```console
-Apple clang version 11.0.0 (clang-1100.0.33.8)
+Apple clang version 11.0.0
 ```
 
-If you see a version before Clang 11, update XCode in the App Store or update clang with homebrew. 
-
-Check your CMake version:
+If you see a version before Clang 11, update LLVM+Clang:
 
 ```bash
-cmake --version
+curl --output clang.tar.xz -L https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/clang+llvm-11.0.0-x86_64-apple-darwin.tar.xz
+mkdir clang
+tar -xvJf clang.tar.xz -C clang
+cd clang/clang+llvm-11.0.0-x86_64-apple-darwin
+sudo cp -R * /usr/local/
 ```
 
-If it's older than CMake 3.14, update it with
+Update CMake with
 
 ```bash
 sudo brew upgrade cmake
