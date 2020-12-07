@@ -4,8 +4,6 @@
 
 [![Scistats](https://www.kdnuggets.com/wp-content/uploads/statistics-header.jpg)](https://alandefreitas.github.io/scistats/)
 
-> ** This is work in progress!**
-
 <br/>
 
 Statistics help us analyze and interpret data. High-performance statistical algorithms help us analyze and interpret a lot of data. Most environments provide convenient helper functions to calculate basic statistics. Scistats aims to provide high-performance statistical algorithms with an easy and familiar interface. All algorithms can run sequentially or in parallel, depending on how much data you have.
@@ -64,35 +62,224 @@ mean(execution::par, x);
 
 If no execution policy is provided, scistats will infer the best execution policy according to the input data.
 
+Other functions to measure central tendency are:
+
+|Function      | Description     |
+|--------------|-----------------|
+| `mean(x)`       | Arithmetic mean  |
+| `median(x)`     | Median  |
+| `mode(x)`       | Mode  |
+
 #### Dispersion
 
-> Work in progress
+To calculate the standard deviation of a data set:
+
+```cpp
+stddev(x);
+```
+
+If you already know the mean `m`, you can make calculations faster with:
+
+```cpp
+stddev(x,m);
+```
+
+Other functions to measure dispersion are:
+
+|Function      | Description     |
+|--------------|-----------------|
+| `var(x)`       | Variance  |
+| `stddev(x)`       | Standard Deviation  |
+| `min(x)`     | Minimum Value |
+| `max(x)`     | Maximum Value  |
+| `bounds(x)`     | Minimum and Maximum Values  |
+| `percentile(x,p)`       | Calculate `p`-th percentile  |
 
 #### Correlation
 
-> Work in progress
+To calculate the covariance of two data sets:
 
-### Probability
+```cpp
+cov(x,y);
+```
 
-> Work in progress
+### Probability Distributions
+
+To get the probability of `x` in a normal distribution:
+
+```cpp
+norm_pdf(x);
+```
+
+To get the cumulative probability of `x` in a normal distribution:
+
+```cpp
+norm_cdf(x);
+```
+
+To get the value `x` that has a cumulative probability `p` in a normal distribution:
+
+```cpp
+norm_inv(p);
+```
+
+| Probability  | Cumulative |  Inverse    | Description     |
+|--------------|-----------------|--------------|-----------------|
+| `norm_pdf(x)`   | `norm_cdf(x)`   | `norm_inv(p)`   | Normal distribution  |
+| `t_pdf(x,df)`   | `t_cdf(x,df)`   | `t_inv(p,df)`   | Student's T distribution  |
+
+where `df` is the degrees of freedom in the probability distribution.
 
 ### Hypothesis Testing
 
-> Work in progress
+To test the hypothesis that the values in `x` come from a distribution with `mean(x)` is zero:
+
+```cpp
+t_test(x);
+```
+
+To test the hypothesis that the values in `x` and `y` have the same mean:
+
+```cpp
+t_test(x,y);
+```
+
+For a paired test:
+
+```cpp
+t_test_paired(x,y);
+```
+
+To get a confidence interval for these tests:
+
+```cpp
+t_test_interval(x);
+t_test_interval(x,y);
+```
 
 ### Bayesian statistics
 
-> Work in progress
+Given (i) the probability `P(E|H)=likelihood` of the evidence `E` given the hypothesis `H`, (ii) the prior probability `p_hypothesis` of hypothesis `H`, and (iii) the prior probability `p_evidence` of evidence `E`, we can calculate the probability `P(H|E)` of a hypothesis `H` given the evidence `E` with:  
 
-### Data processing
+```cpp
+bayes_theorem(likelihood, p_hypothesis, p_evidence)
+```
 
-> Work in progress
+Given `P(E|H)` and `P(E|not H)`, we can calculate the bayes factor:
 
-#### Outliers
+```cpp
+bayes_factor(p_evidence_given_h, p_evidence_given_not_h)
+``` 
 
-> Work in progress
+### Mathematics
+
+#### Parallel Arithmetic
+
+To sum the elements of a range in parallel:
+
+```cpp
+sum(execution::parallel_policy, x)
+```
+
+Or let `scistats` infer if it is worth doing it in parallel:
+
+```cpp
+sum(x)
+```
+
+|   Function        |   Description     | 
+|-------------------|-------------------|
+| `sum`              | summation        |
+| `prof`         | product     |
+
+
+#### Constants
+
+The header `scistats/math/constants.h` defines a number of constants:
+
+|   Function        |   Description     |  Approximate Value  |
+|-------------------|-------------------|----------------|
+| `pi`              | pi                | 3.14...        |
+| `epsilon`         | a tiny number     | 0.000...1      |
+| `inf`             | the number representing infinity   | +inf  |
+| `NaN`             | the number representing not a number   | nan  |
+
+#### Functions
+
+Some helper functions:
+
+|   Function        |   Description     |
+|-------------------|-------------------|
+|   **Numeric**        |   |
+`abs`      |   absolute value (for floating point and integers)  |  
+`almost_equal`      |   check if two numbers are almost the same  |
+|   **Trigonometric**        |   |
+`acot`      |   acot  |  
+`cot`      |   cot  |  
+|   **Special**        |   |
+`beta`      |   beta  |  
+`beta_inc`      |   beta_inc  |  
+`beta_inc_inv`      |   beta_inc_inv  |  
+`beta_inc_inv_upper`      |   beta_inc_inv_upper  |  
+`beta_inc_upper`      |   beta_inc_upper  |  
+`betaln`      |   betaln  |  
+`erfinv`      |   erfinv  |  
+`gammaln`      |   gammaln  |  
+`tgamma`      |   tgamma  |  
+`xinbta`      |   xinbta  |  
+
+#### Measuring Time
+
+To measure the time between two operations:
+
+```cpp
+double t1 = tic();
+// your operations
+double t2 = toc();
+```
+
+To measure the time it takes to run a function:
+
+```cpp
+double t = timeit([](){
+    // Your function...
+});
+```
+
+To create a mini-benchmark measuring the time it takes to run a function:
+
+```cpp
+std::vector<double> t = minibench([](){
+    // Your function...
+});
+std::cout << "Mean: " << mean(t) << std::endl;
+std::cout << "Standard Deviation: " << stddev(t) << std::endl;
+```
+
+#### Random Number Generators
+
+To generate a random integer between `a` and `b` with a reasonable 
+random number generator:
+
+```cpp
+randi(a,b)
+```
+
+To generate a random number from a normal distribution:
+
+```cpp
+randn()
+```
+
+To generate a random number from an uniform distribution between `a` and `b`:
+
+```cpp
+rand(a,b)
+```
 
 ## Roadmap
+
+Some functions we plan to implement are:
 
 * Math
     * Parallel Arithmetic
@@ -120,7 +307,7 @@ If no execution policy is provided, scistats will infer the best execution polic
 
 #### Dependencies
 
-* C++17
+* C++20
 * CMake 3.14+
 
 <details>
@@ -138,20 +325,11 @@ The output should be something like:
 g++-8 (Ubuntu 8.4.0-1ubuntu1~18.04) 8.4.0
 ```
 
-If you see a version before GCC-8, update it with
+If you see a version before GCC-10, update it with
 
 ```bash
 sudo apt update
-sudo apt install gcc-8
-sudo apt install g++-8
-```
-
-To update to any other version, like GCC-9 or GCC-10:
-
-```bash
-sudo apt install build-essential
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt-get update
+sudo apt install gcc-10
 sudo apt install g++-10
 ```
 
@@ -188,7 +366,7 @@ or download the most recent version from [cmake.org](https://cmake.org/).
 [Later](#build-the-examples) when running CMake, make sure you are using GCC-8 or higher by appending the following options:
 
 ```bash
--DCMAKE_C_COMPILER=/usr/bin/gcc-8 -DCMAKE_CXX_COMPILER=/usr/bin/g++-8
+-DCMAKE_C_COMPILER=/usr/bin/gcc-10 -DCMAKE_CXX_COMPILER=/usr/bin/g++-10
 ```
 
 </details>
@@ -205,18 +383,20 @@ clang --version
 The output should have something like
 
 ```console
-Apple clang version 11.0.0 (clang-1100.0.33.8)
+Apple clang version 11.0.0
 ```
 
-If you see a version before Clang 11, update XCode in the App Store or update clang with homebrew. 
-
-Check your CMake version:
+If you see a version before Clang 11, update LLVM+Clang:
 
 ```bash
-cmake --version
+curl --output clang.tar.xz -L https://github.com/llvm/llvm-project/releases/download/llvmorg-11.0.0/clang+llvm-11.0.0-x86_64-apple-darwin.tar.xz
+mkdir clang
+tar -xvJf clang.tar.xz -C clang
+cd clang/clang+llvm-11.0.0-x86_64-apple-darwin
+sudo cp -R * /usr/local/
 ```
 
-If it's older than CMake 3.14, update it with
+Update CMake with
 
 ```bash
 sudo brew upgrade cmake
