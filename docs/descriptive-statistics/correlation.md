@@ -4,7 +4,6 @@ title: Correlation
 nav_order: 3
 has_children: false
 parent: Descriptive statistics
-grand_parent: Examples
 has_toc: false
 ---
 # Correlation

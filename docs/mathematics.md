@@ -1,9 +1,8 @@
 ---
 layout: default
 title: Mathematics
-nav_order: 5
+nav_order: 6
 has_children: true
-parent: Examples
 has_toc: false
 ---
 # Mathematics

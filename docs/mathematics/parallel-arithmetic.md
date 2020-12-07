@@ -4,7 +4,6 @@ title: Parallel Arithmetic
 nav_order: 1
 has_children: false
 parent: Mathematics
-grand_parent: Examples
 has_toc: false
 ---
 # Parallel Arithmetic

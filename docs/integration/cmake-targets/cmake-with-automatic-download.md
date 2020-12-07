@@ -27,7 +27,7 @@ CPMAddPackage(
 target_link_libraries(my_target PUBLIC scistats)
 ```
 
-You can now add the [scistats headers](../../examples.md) to your source files.
+You can now add the [scistats headers](#examples) to your source files.
 
 However, it's always recommended to look for Scistats with `find_package` before including it as a subdirectory. You can use:
 

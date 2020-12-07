@@ -34,7 +34,7 @@ add_executable(my_target main.cpp)
 target_link_libraries(my_target PUBLIC scistats)
 ```
 
-You can now add the [scistats headers](../../examples.md) to your source files.
+You can now add the [scistats headers](#examples) to your source files.
 
 However, it's always recommended to look for Scistats with `find_package` before including it as a subdirectory. Otherwise, we can get [ODR errors](https://en.wikipedia.org/wiki/One_Definition_Rule) in larger projects. 
 
