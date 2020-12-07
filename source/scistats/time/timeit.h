@@ -9,13 +9,13 @@
 #include <scistats/time/tictoc.h>
 
 namespace scistats {
-    template<typename DURATION_TYPE = std::chrono::nanoseconds, typename CALLABLE = std::function<void()>>
+    template <typename DURATION_TYPE = std::chrono::nanoseconds,
+              typename CALLABLE = std::function<void()>>
     typename DURATION_TYPE::rep timeit(const CALLABLE &fn) {
         auto s = tic<DURATION_TYPE>();
         fn();
         return toc<DURATION_TYPE>(s);
     }
-}
+} // namespace scistats
 
-
-#endif //SCISTATS_TIMEIT_H
+#endif // SCISTATS_TIMEIT_H

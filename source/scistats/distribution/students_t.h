@@ -112,7 +112,7 @@ namespace scistats {
             return tan(pi<T1> * (p - 0.5));
         }
 
-            // For small d.f., call betaincinv which uses Newton's method
+        // For small d.f., call betaincinv which uses Newton's method
         else if (v < 1000) {
             T1 q = p - .5;
             T2 df = v;

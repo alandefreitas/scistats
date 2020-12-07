@@ -30,9 +30,11 @@ namespace scistats {
     /// \note P(E|H)/P(E) (from P(E|H)*P(H)/P(E)) is the impact of E on H
     /// \tparam T Type of floating number
     /// \param likelyhood P(E|H): how much this evidence would support the
-    /// hypothesis \param prior P(H): prior probability of the hypothesis \param
-    /// model_evidence P(E): Probability of this evidence all hypotheses
-    /// considered \return Posterior probability P(H|E) \see
+    /// hypothesis
+    /// \param prior P(H): prior probability of the hypothesis
+    /// \param model_evidence P(E): Probability of this evidence all hypotheses
+    /// considered
+    /// \return Posterior probability P(H|E) \see
     /// https://en.wikipedia.org/wiki/Bayesian_inference \see
     /// https://en.wikipedia.org/wiki/Jeffreys_prior \see
     /// https://en.wikipedia.org/wiki/Bayesian_network \see

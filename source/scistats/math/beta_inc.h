@@ -10,8 +10,8 @@
 
 // Internal
 #include <scistats/common/concepts.h>
-#include <scistats/math/constants.h>
 #include <scistats/math/abs.h>
+#include <scistats/math/constants.h>
 
 namespace scistats {
     /// Incomplete beta function

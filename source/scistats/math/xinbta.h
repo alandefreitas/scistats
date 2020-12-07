@@ -42,7 +42,7 @@ namespace scistats {
             return 0.0;
         }
 
-        if (abs(alpha-1.0) < epsilon<double>) {
+        if (abs(alpha - 1.0) < epsilon<double>) {
             return 1.0;
         }
 
@@ -162,7 +162,8 @@ namespace scistats {
                     return value;
                 }
 
-                if (abs(tx) > epsilon<double> && abs(tx-1.) > epsilon<double>) {
+                if (abs(tx) > epsilon<double> &&
+                    abs(tx - 1.) > epsilon<double>) {
                     break;
                 }
 

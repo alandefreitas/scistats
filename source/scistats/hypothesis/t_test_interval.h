@@ -41,50 +41,37 @@ namespace scistats {
                 "Cannot run t-test with infinity in the data");
         }
 
-size_t sample_size = x.size() - n_nans;
-auto df = static_cast<double>(sample_size - 1);
-double xmean = mean(x);
-double sdpop = stddev(x, xmean);
-double ser = sdpop / std::sqrt(sample_size);
+        size_t sample_size = x.size() - n_nans;
+        auto df = static_cast<double>(sample_size - 1);
+        double xmean = mean(x);
+        double sdpop = stddev(x, xmean);
+        double ser = sdpop / std::sqrt(sample_size);
 
-// Compute the confidence interval for the test
-switch (tail) {
-case tail_type::two_tailed: {
-double critical_v = t_inv((1 - alpha / 2), df) * ser;
-return
-std::make_pair(xmean
-- critical_v, xmean + critical_v);
-}
-case tail_type::right_tail: {
-double critical_v = t_inv(1 - alpha, df) * ser;
-return
-std::make_pair(xmean
-- critical_v,
+        // Compute the confidence interval for the test
+        switch (tail) {
+        case tail_type::two_tailed: {
+            double critical_v = t_inv((1 - alpha / 2), df) * ser;
+            return std::make_pair(xmean - critical_v, xmean + critical_v);
+        }
+        case tail_type::right_tail: {
+            double critical_v = t_inv(1 - alpha, df) * ser;
+            return std::make_pair(xmean - critical_v,
+                                  std::numeric_limits<double>::infinity());
+        }
+        case tail_type::left_tail: {
+            double critical_v = t_inv(1 - alpha, df) * ser;
+            return std::make_pair(-std::numeric_limits<double>::infinity(),
+                                  xmean + critical_v);
+        }
+        }
+        return std::make_pair(NaN<double>, NaN<double>);
+    }
 
-std::numeric_limits<double>::infinity()
-
-);
-}
-case tail_type::left_tail: {
-double critical_v = t_inv(1 - alpha, df) * ser;
-return std::make_pair(-
-
-std::numeric_limits<double>::infinity(),
-        xmean
-
-+ critical_v);
-}
-}
-return
-std::make_pair(NaN<double>, NaN<double>
-);
-}
-
-/// \brief Two-sample t-test interval
-template<Range T1, Range T2>
-std::pair<double, double>
-t_test_interval(const T1 &x, const T2 &y, double alpha = 0.05,
-                int equal_variance = true,
+    /// \brief Two-sample t-test interval
+    template <Range T1, Range T2>
+    std::pair<double, double>
+    t_test_interval(const T1 &x, const T2 &y, double alpha = 0.05,
+                    int equal_variance = true,
                     tail_type tail = tail_type::two_tailed) {
         const size_t nx = x.size();
         const size_t ny = y.size();
@@ -126,7 +113,7 @@ t_test_interval(const T1 &x, const T2 &y, double alpha = 0.05,
                                   difference + spread);
         }
         }
-        return std::make_pair(NaN<double>,NaN<double>);
+        return std::make_pair(NaN<double>, NaN<double>);
     }
 
 } // namespace scistats
