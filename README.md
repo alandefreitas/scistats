@@ -18,10 +18,10 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 
 - [Examples](#examples)
   - [Descriptive statistics](#descriptive-statistics)
-  - [Probability](#probability)
+  - [Probability Distributions](#probability-distributions)
   - [Hypothesis Testing](#hypothesis-testing)
   - [Bayesian statistics](#bayesian-statistics)
-  - [Data processing](#data-processing)
+  - [Mathematics](#mathematics)
 - [Roadmap](#roadmap)
 - [Integration](#integration)
   - [Build from Source](#build-from-source)
