@@ -24,7 +24,6 @@ namespace scistats {
     template <ExecutionPolicy P, Iterator T1, Iterator T2>
     promote<value_type<T1>> cov(P p, T1 begin_a, T1 end_a, T2 begin_b,
                                 T2 end_b) {
-        /* still fails on GCC/Clang */
         using value_type = value_type<T1>;
         using return_type = promote<value_type>;
 
@@ -41,16 +40,16 @@ namespace scistats {
         // c_i = (a_i - sum_a)/n * (b_i - sum_b)/n
         auto range_c = ranges::views::zip_with(
             [&](auto a, auto b) {
-                return_type t1 = static_cast<return_type>(a) -
-                                 static_cast<return_type>(sum_a) / n;
-                return_type t2 = static_cast<return_type>(b) -
-                                 static_cast<return_type>(sum_b) / n;
+                const return_type t1 = static_cast<return_type>(a) -
+                                       static_cast<return_type>(sum_a) / n;
+                const return_type t2 = static_cast<return_type>(b) -
+                                       static_cast<return_type>(sum_b) / n;
                 return t1 * t2;
             },
             range_a, range_b);
 
         return_type c = sum(p, range_c);
-        return c / (n - 1);
+        return c / (n < 1 ? 1 : n);
     }
 
     /// \brief Threshold for using the parallel version of cov
