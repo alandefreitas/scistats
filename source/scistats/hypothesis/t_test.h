@@ -29,7 +29,7 @@ namespace scistats {
     template <Range T>
     double t_test(const T &x, double mu = 0.0,
                   tail_type tail = tail_type::two_tailed) {
-        size_t n_nans = ranges::count(x, NaN<typename T::value_type>);
+        size_t n_nans = ranges::count(x, NaN<typename T::value_type>());
         if (n_nans) {
             throw std::logic_error("Cannot run t-test with NaNs in the data");
         }
@@ -60,7 +60,7 @@ namespace scistats {
             return t_cdf(tval, df);
             break;
         }
-        return NaN<double>;
+        return NaN<double>();
     }
 
     /// \brief Two-sample t-test
@@ -68,7 +68,7 @@ namespace scistats {
     double t_test(const T1 &x, const T2 &y, int equal_variance = true,
                   tail_type tail = tail_type::two_tailed) {
         size_t n_nans =
-            ranges::count(ranges::views::concat(x, y), NaN<value_type<T1>>);
+            ranges::count(ranges::views::concat(x, y), NaN<value_type<T1>>());
         if (n_nans) {
             throw std::logic_error("Cannot run t-test with NaNs in the data");
         }
@@ -102,8 +102,8 @@ namespace scistats {
                   (pow(s2xbar, 2) / (nx - 1) + pow(s2ybar, 2) / (ny - 1));
             double se = sqrt(s2xbar + s2ybar);
             ratio = difference / se;
-            if (abs(se) < epsilon<double>) {
-                dfe = 1;
+            if (almost_equal(se, 0.)) {
+                dfe = 1.;
             }
         }
 
@@ -116,7 +116,7 @@ namespace scistats {
         case tail_type::left_tail:
             return t_cdf(ratio, dfe);
         }
-        return NaN<double>;
+        return NaN<double>();
     }
 
 } // namespace scistats

@@ -15,7 +15,7 @@ namespace scistats {
     template <Floating T>
     T norm_pdf(T x, T mu = T{0.0}, T sigma = T{1.0}) {
         const T variance = std::pow(sigma, 2.0);
-        return (1.0 / (sqrt(2.0 * pi<T> * variance))) *
+        return (1.0 / (sqrt(2.0 * pi<T>() * variance))) *
                exp(-(std::pow(x - mu, 2.0) / (2 * variance)));
     }
 

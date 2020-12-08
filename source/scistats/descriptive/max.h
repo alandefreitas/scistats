@@ -22,7 +22,7 @@ namespace scistats {
     template <Iterator T>
     value_type<T> max(execution::sequenced_policy, T begin, T end) {
         if (std::distance(begin, end) == 0) {
-            return NaN<value_type<T>>;
+            return NaN<value_type<T>>();
         } else {
             return *std::max_element(begin, end);
         }

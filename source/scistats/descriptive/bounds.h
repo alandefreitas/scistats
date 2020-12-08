@@ -22,7 +22,7 @@ namespace scistats {
     std::pair<value_type<T>, value_type<T>> bounds(execution::sequenced_policy,
                                                    T begin, T end) {
         if (std::distance(begin, end) == 0) {
-            return std::make_pair(NaN<value_type<T>>, NaN<value_type<T>>);
+            return std::make_pair(NaN<value_type<T>>(), NaN<value_type<T>>());
         } else {
             auto p = std::minmax_element(begin, end);
             return std::make_pair(*p.first, *p.second);

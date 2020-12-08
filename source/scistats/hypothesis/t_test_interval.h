@@ -29,7 +29,7 @@ namespace scistats {
     template <Range T>
     auto t_test_interval(T &x, double alpha = 0.05,
                          tail_type tail = tail_type::two_tailed) {
-        size_t n_nans = ranges::count(x, NaN<typename T::value_type>);
+        size_t n_nans = ranges::count(x, NaN<typename T::value_type>());
         if (n_nans) {
             throw std::logic_error("Cannot run t-test with NaNs in the data");
         }
@@ -64,7 +64,7 @@ namespace scistats {
                                   xmean + critical_v);
         }
         }
-        return std::make_pair(NaN<double>, NaN<double>);
+        return std::make_pair(NaN<double>(), NaN<double>());
     }
 
     /// \brief Two-sample t-test interval
@@ -92,7 +92,7 @@ namespace scistats {
             dfe = pow((s2xbar + s2ybar), 2) /
                   (pow(s2xbar, 2) / (nx - 1) + pow(s2ybar, 2) / (ny - 1));
             se = sqrt(s2xbar + s2ybar);
-            if (abs(se) < epsilon<double>) {
+            if (almost_equal(se, 0.)) {
                 dfe = 1;
             }
         }
@@ -113,7 +113,7 @@ namespace scistats {
                                   difference + spread);
         }
         }
-        return std::make_pair(NaN<double>, NaN<double>);
+        return std::make_pair(NaN<double>(), NaN<double>());
     }
 
 } // namespace scistats

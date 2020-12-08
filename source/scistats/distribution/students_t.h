@@ -11,6 +11,7 @@
 #include <scistats/distribution/norm.h>
 #include <scistats/math/abs.h>
 #include <scistats/math/acot.h>
+#include <scistats/math/almost_equal.h>
 #include <scistats/math/beta_inc.h>
 #include <scistats/math/beta_inc_inv.h>
 #include <scistats/math/beta_inc_upper.h>
@@ -24,7 +25,7 @@ namespace scistats {
     T1 t_pdf(T1 x, T2 df) {
         const auto term1_numerator = tgamma((df + T2{1.l}) / T2{2.0l});
         const auto term1_denominator =
-            (sqrt(df * pi<T1>) * tgamma(df / T2{2.}));
+            (sqrt(df * pi<T1>()) * tgamma(df / T2{2.}));
         const auto term1 = term1_numerator / term1_denominator;
         const auto term2_base = 1.0 + x * x / df;
         const auto term2_exponent = -((df + 1.0) / 2.0);
@@ -40,11 +41,11 @@ namespace scistats {
 
         // error case
         if (v <= 0) {
-            return NaN<T1>;
+            return NaN<T1>();
         }
 
         // most trivial case
-        else if (abs(x) < epsilon<T1>) {
+        else if (almost_equal(x, 0.)) {
             return 0.5;
         }
 
@@ -54,14 +55,14 @@ namespace scistats {
         }
 
         // cauchy distribution if v == 1
-        else if (abs(v - 1) < epsilon<T2>) {
+        else if (almost_equal(v, 1.)) {
             // For x > 0, F(x) = 1 - F(-|x|).
             bool xpos = x > 0;
             // Special case for Cauchy distribution.  See Devroye pages 29 and
             // 450. Note that instead of the usual Cauchy formula (atan x)/pi +
             // 0.5, we use acot(-x), which is equivalent and avoids roundoff
             // error.
-            return xpos + acot(-x) / pi<T1>;
+            return xpos + acot(-x) / pi<T1>();
         }
 
         // general case
@@ -70,7 +71,7 @@ namespace scistats {
             // See Abramowitz and Stegun, formulas and 26.7.1/26.5.27 and 26.5.2
             // For small v, form v/(v+x^2) to maintain precision
             T1 xsq = x * x;
-            T1 p = NaN<T1>;
+            T1 p = NaN<T1>();
 
             if (v < xsq) {
                 p = beta_inc(v / (v + xsq), v / 2.0, 0.5) / 2.;
@@ -94,22 +95,22 @@ namespace scistats {
     template <Floating T1, FloatingOrInteger T2>
     T1 t_inv(T1 p, T2 v) {
         // The inverse cdf of 0 is -Inf, and the inverse cdf of 1 is Inf.
-        if (abs(p) <= epsilon<T1> && v > 0) {
-            return -inf<T1>;
+        if (almost_equal(p, 0.) && v > 0) {
+            return -inf<T1>();
         }
 
-        if (abs(p - 1) <= epsilon<T1> && v > 0) {
-            return inf<T1>;
+        if (almost_equal(p, 1.) && v > 0) {
+            return inf<T1>();
         }
 
         // invalid input
         if (p < 0 || p > 1 || v <= 0) {
-            return NaN<T1>;
+            return NaN<T1>();
         }
 
         // Invert the Cauchy distribution explicitly
-        if (abs(v - 1) <= epsilon<T2>) {
-            return tan(pi<T1> * (p - 0.5));
+        if (almost_equal(v, 1.)) {
+            return tan(pi<T1>() * (p - 0.5));
         }
 
         // For small d.f., call betaincinv which uses Newton's method

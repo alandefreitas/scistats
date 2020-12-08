@@ -48,6 +48,9 @@ namespace scistats {
     concept ExecutionPolicy = is_execution_policy_v<T>;
 
     template <typename T>
+    concept Number = std::is_arithmetic_v<T>;
+
+    template <typename T>
     concept Floating = std::is_floating_point_v<T>;
 
     template <typename T>

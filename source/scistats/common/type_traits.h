@@ -54,6 +54,11 @@ namespace scistats {
         std::conditional_t<std::is_integral_v<NUMBER_TYPE>,
                            promote_integral<NUMBER_TYPE>, NUMBER_TYPE>;
 
+    template <class NUMBER_TYPE1, class NUMBER_TYPE2>
+    using largest_type =
+        std::conditional_t<sizeof(NUMBER_TYPE1) < sizeof(NUMBER_TYPE2),
+                           NUMBER_TYPE2, NUMBER_TYPE1>;
+
 } // namespace scistats
 
 #endif // SCISTATS_TYPE_TRAITS_H
