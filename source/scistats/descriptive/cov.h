@@ -49,7 +49,7 @@ namespace scistats {
             range_a, range_b);
 
         return_type c = sum(p, range_c);
-        return c / (n < 1 ? 1 : n);
+        return c / (n <= 1 ? 1 : n - 1);
     }
 
     /// \brief Threshold for using the parallel version of cov
