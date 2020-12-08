@@ -33,11 +33,11 @@ If no execution policy is provided, scistats will infer the best execution polic
 
 Other functions to measure central tendency are:
 
-|Function      | Description     |
-|--------------|-----------------|
-| `mean(x)`       | Arithmetic mean  |
-| `median(x)`     | Median  |
-| `mode(x)`       | Mode  |
+| Function    | Description     |
+| ----------- | --------------- |
+| `mean(x)`   | Arithmetic mean |
+| `median(x)` | Median          |
+| `mode(x)`   | Mode            |
 
 
 

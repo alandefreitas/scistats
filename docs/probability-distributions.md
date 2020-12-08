@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Probability Distributions
-nav_order: 3
+nav_order: 4
 has_children: false
 has_toc: false
 ---
@@ -25,10 +25,10 @@ To get the value `x` that has a cumulative probability `p` in a normal distribut
 norm_inv(p);
 ```
 
-| Probability  | Cumulative |  Inverse    | Description     |
-|--------------|-----------------|--------------|-----------------|
-| `norm_pdf(x)`   | `norm_cdf(x)`   | `norm_inv(p)`   | Normal distribution  |
-| `t_pdf(x,df)`   | `t_cdf(x,df)`   | `t_inv(p,df)`   | Student's T distribution  |
+| Probability   | Cumulative    | Inverse       | Description              |
+| ------------- | ------------- | ------------- | ------------------------ |
+| `norm_pdf(x)` | `norm_cdf(x)` | `norm_inv(p)` | Normal distribution      |
+| `t_pdf(x,df)` | `t_cdf(x,df)` | `t_inv(p,df)` | Student's T distribution |
 
 where `df` is the degrees of freedom in the probability distribution.
 

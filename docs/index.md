@@ -20,6 +20,7 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 <!-- https://gist.github.com/jbroadway/2836900 -->
 
 
+- [Quick Start](quick-start.md)
 - [Descriptive statistics](descriptive-statistics.md)
   - [Central Tendency](descriptive-statistics/central-tendency.md)
   - [Dispersion](descriptive-statistics/dispersion.md)

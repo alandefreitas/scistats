@@ -22,8 +22,8 @@ sum(x)
 
 |   Function        |   Description     | 
 |-------------------|-------------------|
-| `sum`              | summation        |
-| `prod`         | product     |
+| `sum`             | summation         |
+| `prod`            | product           |
 
 
 

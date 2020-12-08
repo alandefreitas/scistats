@@ -22,14 +22,14 @@ stddev(x,m);
 
 Other functions to measure dispersion are:
 
-|Function      | Description     |
-|--------------|-----------------|
-| `var(x)`       | Variance  |
-| `stddev(x)`       | Standard Deviation  |
-| `min(x)`     | Minimum Value |
-| `max(x)`     | Maximum Value  |
-| `bounds(x)`     | Minimum and Maximum Values  |
-| `percentile(x,p)`       | Calculate `p`-th percentile  |
+| Function          | Description                 |
+| ----------------- | --------------------------- |
+| `var(x)`          | Variance                    |
+| `stddev(x)`       | Standard Deviation          |
+| `min(x)`          | Minimum Value               |
+| `max(x)`          | Maximum Value               |
+| `bounds(x)`       | Minimum and Maximum Values  |
+| `percentile(x,p)` | Calculate `p`-th percentile |
 
 
 
