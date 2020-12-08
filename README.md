@@ -16,6 +16,7 @@ Statistics help us analyze and interpret data. High-performance statistical algo
 <details>
 <summary>Table of Contents</summary>
 
+- [Quick Start](#quick-start)
 - [Descriptive statistics](#descriptive-statistics)
   - [Central Tendency](#central-tendency)
   - [Dispersion](#dispersion)
