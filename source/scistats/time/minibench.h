@@ -10,6 +10,13 @@
 #include <vector>
 
 namespace scistats {
+    /// \brief Run a function repeatedly and store the time duration
+    /// \tparam DURATION_TYPE Duration type (default = nanoseconds)
+    /// \tparam CALLABLE Function type with no parameters
+    /// \param fn Function to be benchmarked
+    /// \param replicates Number of iterations (default = 30 as a rule of thumb
+    /// for the central limit theorem)
+    /// \return Vector with durations in nanoseconds
     template <typename DURATION_TYPE = std::chrono::nanoseconds,
               typename CALLABLE = std::function<void()>>
     std::vector<typename DURATION_TYPE::rep> minibench(CALLABLE fn,
