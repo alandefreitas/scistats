@@ -33,7 +33,7 @@ int main() {
         }
     };
 
-    double minfd = -inf<double>;
+    double minfd = -inf<double>();
     test("Normal Distribution") = [&] {
         auto pdfs =
             ranges::views::transform(x, [](auto v) { return norm_pdf(v); });
@@ -132,14 +132,31 @@ int main() {
 
         auto t_invs =
             ranges::views::transform(x, [df](auto p) { return t_inv(p, df); });
-        compare_floating_range(
-            "t_invs", t_invs,
-            std::vector<double>{
-                NaN<double>, NaN<double>, NaN<double>, NaN<double>, NaN<double>,
-                NaN<double>, NaN<double>, NaN<double>, NaN<double>, NaN<double>,
-                NaN<double>, NaN<double>, minfd,       -1.5798,     -1.31143,
-                -1.17386,    -0.854192,   -0.683044,   0,           inf<double>,
-                NaN<double>, NaN<double>, NaN<double>, NaN<double>});
+        compare_floating_range("t_invs", t_invs,
+                               std::vector<double>{NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   minfd,
+                                                   -1.5798,
+                                                   -1.31143,
+                                                   -1.17386,
+                                                   -0.854192,
+                                                   -0.683044,
+                                                   0,
+                                                   inf<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>(),
+                                                   NaN<double>()});
     };
 
     return 0;
