@@ -10,6 +10,7 @@
 
 // Internal
 #include <scistats/common/concepts.h>
+#include <scistats/math/almost_equal.h>
 #include <scistats/math/constants.h>
 
 namespace scistats {
@@ -18,10 +19,10 @@ namespace scistats {
     template <Floating T>
     T erfinv(T x) {
         if (x < -1 || x > 1) {
-            return std::numeric_limits<T>::quiet_NaN();
-        } else if (abs(x - 1.0) < epsilon<T>) {
+            return NaN<T>();
+        } else if (almost_equal(x, 1.0)) {
             return std::numeric_limits<T>::infinity();
-        } else if (abs(x + 1.0) < epsilon<T>) {
+        } else if (almost_equal(x, -1.0)) {
             return -std::numeric_limits<T>::infinity();
         }
 
@@ -158,7 +159,7 @@ namespace scistats {
         x = (1.0 - x) * (1.0 + x);
         lnx = log(x);
 
-        tt1 = 2 / (pi<T> * 0.147) + 0.5 * lnx;
+        tt1 = 2 / (pi<T>() * 0.147) + 0.5 * lnx;
         tt2 = 1 / (0.147) * lnx;
 
         return (sgn * sqrt(-tt1 + sqrt(tt1 * tt1 - tt2)));

@@ -9,20 +9,24 @@
 #include <limits>
 #include <scistats/common/concepts.h>
 #include <scistats/math/abs.h>
+#include <scistats/math/constants.h>
 #include <type_traits>
 
 namespace scistats {
     template <Floating T>
     bool almost_equal(T x, T y, int units_in_last_place = 2) {
-        // the machine epsilon has to be scaled to the magnitude of the values
-        // used and multiplied by the desired precision in ULPs (units in the
-        // last place)
+        const auto scale_magnitude = std::fabs(x + y);
+        const auto eps = epsilon<T>(scale_magnitude) * units_in_last_place;
         auto diff = scistats::abs(x - y);
-        auto eps = std::numeric_limits<T>::epsilon() * std::fabs(x + y) *
-                   units_in_last_place;
-        return diff <= eps ||
-               diff < std::numeric_limits<T>::min(); // unless the result is
-                                                     // subnormal
+        if (diff <= eps) {
+            return true;
+        } else {
+            const bool result_is_subnormal = diff < min<T>();
+            if (result_is_subnormal) {
+                return true;
+            }
+        }
+        return false;
     }
 
     template <Integer T>

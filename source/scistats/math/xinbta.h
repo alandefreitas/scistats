@@ -12,6 +12,7 @@
 // External
 
 // Internal
+#include <scistats/math/almost_equal.h>
 #include <scistats/math/beta_inc.h>
 #include <scistats/math/constants.h>
 
@@ -38,11 +39,11 @@ namespace scistats {
         double fpu = std::pow(10.0, sae);
 
         //  If the answer is easy to determine, return immediately.
-        if (abs(alpha) < epsilon<double>) {
+        if (almost_equal(alpha, 0.)) {
             return 0.0;
         }
 
-        if (abs(alpha - 1.0) < epsilon<double>) {
+        if (almost_equal(alpha, 1.0)) {
             return 1.0;
         }
 
@@ -162,16 +163,14 @@ namespace scistats {
                     return value;
                 }
 
-                if (abs(tx) > epsilon<double> &&
-                    abs(tx - 1.) > epsilon<double>) {
+                if (!almost_equal(tx, 0.) && !almost_equal(tx, 1.)) {
                     break;
                 }
 
                 g = g / 3.0;
             }
 
-            constexpr double epsilon = 0.0000001;
-            if (fabs(tx - value) < epsilon) {
+            if (almost_equal(tx, value)) {
                 break;
             }
 

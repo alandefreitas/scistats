@@ -11,15 +11,13 @@
 // Internal
 #include <scistats/common/concepts.h>
 #include <scistats/math/abs.h>
-#include <scistats/math/constants.h>
+#include <scistats/math/almost_equal.h>
 
 namespace scistats {
     /// Incomplete beta function
     /// \see http://lib.stat.cmu.edu/apstat/
     template <Floating T>
     T beta_inc(T x, T a, T b) {
-        constexpr T TINY = static_cast<T>(1.0e-30l);
-
         if (x < 0.0 || x > 1.0)
             return 1.0 / 0.0;
 
@@ -56,18 +54,18 @@ namespace scistats {
 
             // Do an iteration of Lentz's algorithm.
             d = 1.0 + numerator * d;
-            if (fabs(d) < TINY)
-                d = TINY;
+            if (almost_equal(d, 0.))
+                d = 0.;
             d = 1.0 / d;
             c = 1.0 + numerator / c;
-            if (fabs(c) < TINY)
-                c = TINY;
+            if (almost_equal(c, 0.))
+                c = 0.;
 
             const T cd = c * d;
             f *= cd;
 
             // Check for stop.
-            if (abs(1.0 - cd) < 1.0e-8) {
+            if (almost_equal(1.0, cd)) {
                 return front * (f - 1.0);
             }
         }
@@ -93,7 +91,7 @@ namespace scistats {
         double value = x;
 
         //  Special cases.
-        if (abs(x) < epsilon<T1> || abs(x - 1.0) < epsilon<T1>) {
+        if (almost_equal(x, 0.) || almost_equal(x, 1.0)) {
             return value;
         }
 
